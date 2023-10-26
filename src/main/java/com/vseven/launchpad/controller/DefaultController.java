@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-//@CrossOrigin("http://localhost:3000")
+//@CrossOr
+    igin("http://localhost:3000")
 public class DefaultController {
-    
+
     @GetMapping("/")
     public ResponseEntity<String> helloWorld() {
         return ResponseEntity.ok("Hello, World!");
