@@ -1,21 +1,20 @@
 package com.vseven.launchpad.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
+import java.util.List;
+
+@Entity(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String username;
     private String email;
-    private String password;
-
-    private boolean enabled;
+    private String password_hash;
+    private int enabled;
     public enum AuthenticationType {
         LOCAL,
         SSO
@@ -23,15 +22,20 @@ public class User {
     private AuthenticationType authenticationType;
 
     // Constructors, getters, and setters
-
     public User() {
         // Default constructor
     }
 
-    public User(String username, String email, String password) {
+
+    /*
+    @OneToMany(mappedBy = "user")
+    private List<UserQuickLink> quickLinks;
+           */
+
+    public User(String username, String email, String the_password_hash) {
         this.username = username;
         this.email = email;
-        this.password = password;
+        this.password_hash = the_password_hash;
     }
 
     // Getters and setters for attributes
@@ -60,11 +64,12 @@ public class User {
         this.email = email;
     }
 
+
     public String getPassword() {
-        return password;
+        return password_hash;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password_hash = password;
     }
 }

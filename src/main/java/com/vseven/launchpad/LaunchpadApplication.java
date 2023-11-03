@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.stereotype.Component;
 
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, SecurityAutoConfiguration.class })
+//@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
+@SpringBootApplication()
+
 @Component
 public class LaunchpadApplication {
 
