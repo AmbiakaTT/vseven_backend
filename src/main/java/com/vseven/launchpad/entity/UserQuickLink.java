@@ -2,10 +2,17 @@ package com.vseven.launchpad.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
-/*
-@Entity(name = "UserQuickLink")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "userquicklink")
 public class UserQuickLink {
 
     @Id
@@ -22,4 +29,4 @@ public class UserQuickLink {
 
 
 }
-*/
+

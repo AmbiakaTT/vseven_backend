@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Integer id) {
-        User user = userService.findById(Long.valueOf(id)).orElse(null);
+        User user = userService.findById(id).orElse(null);
 
         if (user != null) {
             return ResponseEntity.ok(user);
@@ -39,26 +39,12 @@ public class UserController {
     }
     @DeleteMapping("/user/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
-        if (userService.existsById(Long.valueOf(id)) ) {
+        if (userService.existsById(id)) {
             userService.deleteById(Math.toIntExact(Long.valueOf(id)));
             return ResponseEntity.ok("User deleted successfully");
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-
-    /*
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User updatedUser) {
-        if (userService.existsById(Long.valueOf(id))) {
-            updatedUser.setId(Long.valueOf(id)); // Ensure the ID in the updatedUser object matches the path variable
-            User savedUser = userService.save(updatedUser);
-            return ResponseEntity.ok(savedUser);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-    */
-
 
 }

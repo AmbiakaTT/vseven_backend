@@ -7,28 +7,18 @@ import com.vseven.launchpad.service.LinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
-//@CrossOrigin("http://localhost:3000")
 @RequestMapping("/api")
 public class LinkController {
-
-
 
     public LinkService linkService;
 
     @Autowired
     public LinkController(LinkService thelinkService)    {
         linkService = thelinkService;
-    }
-    
-    @GetMapping("/")
-    public ResponseEntity<String> helloWorld() {
-        return ResponseEntity.ok("Hello, World!");
     }
 
     @GetMapping("/links")
@@ -57,14 +47,9 @@ public class LinkController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    
     @PostMapping("/save")
     public void saveLinks(@RequestBody Link link) {
-        // Process the 'link' parameter (e.g., save it to the database)
-        // You can perform any necessary operations with the 'link' parameter here
-
-        // After processing, return the list of all links
         linkService.save(link);
     }
-
 }

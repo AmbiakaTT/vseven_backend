@@ -35,10 +35,10 @@ public class SecurityConfig {
         JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
 
         userDetailsManager.setUsersByUsernameQuery(
-                "SELECT username, password_hash, enabled FROM Users WHERE username = ?"
+                "SELECT username, password_hash, enabled FROM users WHERE userName = ?"
         );
         userDetailsManager.setAuthoritiesByUsernameQuery(
-                "SELECT username, authority FROM Authorities WHERE username = ?"
+                "SELECT username, authority FROM authorities WHERE username = ?"
         );
         return userDetailsManager;
     }

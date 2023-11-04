@@ -33,26 +33,28 @@ public class UserServiceImpl implements UserService {
         userRepository.save(theUser);
 
     }
+
     @Override
-    public void deleteById(int theId) {
-        userRepository.deleteById((long) theId);
+    public void deleteById(Integer theId) {
+        userRepository.deleteById(Long.valueOf(theId));
     }
 
 
+    /*
     @Override
     public boolean existsByUsername(String username) {
         // Use the existsByUsername method from the repository
         return userRepository.existsByUsername(username);
+    }  */
+
+    @Override
+    public boolean existsById(Integer aLong) {
+        return userRepository.existsById(Long.valueOf(aLong));
     }
 
     @Override
-    public boolean existsById(Long aLong) {
-        return userRepository.existsById(aLong);
-    }
-
-    @Override
-    public Optional<User> findById(Long aLong) {
-        return  userRepository.findById(aLong);
+    public Optional<User> findById(Integer aLong) {
+        return  userRepository.findById(Long.valueOf(aLong));
     }
 
     /*@Override
