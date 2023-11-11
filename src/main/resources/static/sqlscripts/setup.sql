@@ -1,61 +1,82 @@
--- Create the Link table
-CREATE TABLE link (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  group_id INT,
-  url VARCHAR(255)
+CREATE TABLE `UserQuickLink` (
+  `id` varchar(255) PRIMARY KEY,
+  `user_id` varchar(255),
+   `username` varchar(255),
+  `link_id` int,
+  `url` varchar(255),
+  `link_name` varchar(255)
 );
 
--- Create the User table
-CREATE TABLE users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(255),
-  email VARCHAR(255),
-  password_hash VARCHAR(255),
-  authentication_method ENUM('LOCAL', 'SSO'),
-  enabled int
+CREATE TABLE `LinkClicks` (
+  `click_id` INT,
+  `user_id` INT,
+  `link_id` INT,
+  `clicked_at` TIMESTAMP,
+  `group` varchar(255)
 );
 
-
--- Create the LinkClicks table
-CREATE TABLE linkclicks (
-  click_id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT,
-  link_id INT,
-  clicked_at TIMESTAMP,
-  link_group VARCHAR(255)
+CREATE TABLE `authority` (
+  `id` int PRIMARY KEY,
+  `user_id` int,
+  `authority` varchar(255)
 );
 
-
-CREATE TABLE authorities (
-   id INT AUTO_INCREMENT PRIMARY KEY,
-   user_id INT,
-   username VARCHAR(255),
-   authority VARCHAR(255)
+CREATE TABLE `User` (
+  `id` integer PRIMARY KEY,
+  `username` varchar(255),
+  `email` varchar(255),
+  `password_hash` varchar(255),
+  `enabled` varchar(255)
 );
 
--- Add foreign keys
-ALTER TABLE linkclicks
-ADD FOREIGN KEY (user_id) REFERENCES users (id);
+CREATE TABLE `Link` (
+  `id` integer PRIMARY KEY,
+  `section_id` integer,
+  `url` integer,
+  `link_name` varchar(255)
+);
 
-ALTER TABLE LinkClicks
-ADD FOREIGN KEY (link_id) REFERENCES link (id);
+CREATE TABLE `LinkGroups` (
+  `group_id` INT,
+  `group_name` varchar(255)
+);
 
--- Insert data into the Link table
-INSERT INTO link (group_id, url) VALUES
-(1, 'https://www.example.com/page1'),
-(1, 'https://www.example.com/page2'),
-(2, 'https://www.example.com/page3'),
-(2, 'https://www.example.com/page4'),
-(3, 'https://www.example.com/page5');
+CREATE TABLE `UserLinkOrder` (
+  `user_id` INTEGER,
+  `group_id` INTEGER,
+  `link_id` INTEGER
+);
+
+CREATE TABLE `authorities` (
+  `authority_id` INT PRIMARY KEY,
+  `user_id` INT,
+  `authority` INT,
+  `username` varchar(255)
+);
+
+ALTER TABLE `UserQuickLink` ADD CONSTRAINT `FK_UserQuickLink_User` FOREIGN KEY (`username`) REFERENCES `users` (`username`);
+
+ALTER TABLE `UserQuickLink` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+
+ALTER TABLE `Link` ADD FOREIGN KEY (`id`) REFERENCES `UserQuickLink` (`link_id`);
+
+ALTER TABLE `authority` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+
+ALTER TABLE `UserQuickLink` ADD FOREIGN KEY (`url`) REFERENCES `Link` (`url`);
+
+ALTER TABLE `UserQuickLink` ADD FOREIGN KEY (`link_name`) REFERENCES `Link` (`link_name`);
+
+ALTER TABLE `authorities` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+
 
 -- Insert data into the User table
 
 
-INSERT INTO users (username, email, password_hash, authentication_method, enabled) VALUES
-('user1', 'user1@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 'LOCAL', true),
-('user2', 'user2@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 'SSO', true),
-('user3', 'user3@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 'LOCAL', true),
-('user4', 'user4@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 'SSO', true);
+INSERT INTO users (username, email, password_hash, enabled) VALUES
+('user1', 'user1@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', true),
+('user2', 'user2@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', true),
+('user3', 'user3@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', true),
+('user4', 'user4@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', true);
 
 
 INSERT INTO authorities (user_id, authority, username) VALUES
@@ -63,3 +84,19 @@ INSERT INTO authorities (user_id, authority, username) VALUES
 (2, 'ADMIN', 'user2'),
 (3, 'ADMIN', 'user3'),
 (4, 'ADMIN', 'user4');
+
+
+-- Insert data into the UserQuickLink table
+INSERT INTO UserQuickLink (id, user_id, link_id, url, link_name)
+VALUES
+    ('1', 'user1', 1, 'https://example1.com', 'Link 1'),
+    ('2', 'user2', 2, 'https://example2.com', 'Link 2'),
+    ('3', 'user1', 3, 'https://example3.com', 'Link 3'),
+    ('4', 'user3', 1, 'https://example1.com', 'Link 1'),
+    ('5', 'user2', 4, 'https://example4.com', 'Link 4');
+
+-- Insert more links for user3
+INSERT INTO UserQuickLink (id, user_id, link_id, url, link_name)
+VALUES
+    ('6', 'user3', 2, 'https://example2.com', 'Link 2'),
+    ('7', 'user3', 5, 'https://example5.com', 'Link 5');

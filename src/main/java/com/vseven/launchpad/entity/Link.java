@@ -1,43 +1,34 @@
 package com.vseven.launchpad.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity(name = "link")
 public class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Getter
-    private int group_id;
-    @Getter
+    @Column(name = "id")
+    private Integer id;
+
+    @Column(name = "section_id")
+    private Integer sectionId;
+
+    @Column(name = "url")
     private String url;
 
-    public void setGroup_id(int group_id) {
-        this.group_id = group_id;
-    }
+    @Column(name = "link_name")
+    private String linkName;
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-
-
-    /*
-    @OneToMany(mappedBy = "link")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "link", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<UserQuickLink> quickLinks;
-                                                  
-
-     */
-
-    @Override
-    public String toString() {
-        return "Link{" +
-                "id=" + id +
-                ", group_id=" + group_id +
-                ", url='" + url + '\'' +
-                '}';
-    }
+     
 }
