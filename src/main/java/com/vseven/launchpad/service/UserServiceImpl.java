@@ -13,9 +13,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-
-    //private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
     @Autowired
     public UserServiceImpl (UserRepository theuserRepository ) {
         userRepository = theuserRepository;
@@ -28,36 +25,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User theUser)  {
-       // String New_password = passwordEncoder.encode(theUser.getPassword());
-       // theUser.setPassword(theUser.getPassword());
         userRepository.save(theUser);
 
     }
-    @Override
-    public void deleteById(int theId) {
-        userRepository.deleteById((long) theId);
-    }
-
 
     @Override
-    public boolean existsByUsername(String username) {
-        // Use the existsByUsername method from the repository
-        return userRepository.existsByUsername(username);
+    public User findByUserName(String username) {
+        return userRepository.findByUserName(username);
     }
 
     @Override
-    public boolean existsById(Long aLong) {
-        return userRepository.existsById(aLong);
+    public void deleteById(Integer theId) {
+        userRepository.deleteById(Long.valueOf(theId));
+    }
+    @Override
+    public boolean existsById(Integer aLong) {
+        return userRepository.existsById(Long.valueOf(aLong));
     }
 
     @Override
-    public Optional<User> findById(Long aLong) {
-        return  userRepository.findById(aLong);
+    public Optional<User> findById(Integer aLong) {
+        return  userRepository.findById(Long.valueOf(aLong));
     }
-
-    /*@Override
-    public String findByEmail (String email) {
-        return userRepository.findByEmail(email);
-    }       */
 
 }

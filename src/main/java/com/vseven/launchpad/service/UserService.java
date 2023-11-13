@@ -1,21 +1,23 @@
 package com.vseven.launchpad.service;
 
 import com.vseven.launchpad.entity.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public interface UserService {
     List<User> findAll();
     void save(User theUser);
+    User findByUserName(String username);
+    void deleteById (Integer theId);
 
-    void deleteById (int theId);
+    //boolean existsByUsername(String username);
 
-    boolean existsByUsername(String username);
+    boolean existsById(Integer aLong);
 
-    boolean existsById(Long aLong);
-
-    Optional<User> findById(Long aLong);
+    Optional<User> findById(Integer aLong);
 
     // String findByEmail(String email);
 }

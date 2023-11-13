@@ -1,7 +1,7 @@
 CREATE TABLE `UserQuickLink` (
-  `id` varchar(255) PRIMARY KEY,
-  `user_id` varchar(255),
-   `username` varchar(255),
+  `id` int PRIMARY KEY,
+  `user_id` int, 
+   `user_name` varchar(255),
   `link_id` int,
   `url` varchar(255),
   `link_name` varchar(255)
@@ -26,7 +26,7 @@ CREATE TABLE `User` (
   `username` varchar(255),
   `email` varchar(255),
   `password_hash` varchar(255),
-  `enabled` varchar(255)
+  `enabled` int
 );
 
 CREATE TABLE `Link` (
@@ -87,7 +87,7 @@ INSERT INTO authorities (user_id, authority, username) VALUES
 
 
 -- Insert data into the UserQuickLink table
-INSERT INTO UserQuickLink (id, user_id, link_id, url, link_name)
+INSERT INTO UserQuickLink (id, username, link_id, url, link_name)
 VALUES
     ('1', 'user1', 1, 'https://example1.com', 'Link 1'),
     ('2', 'user2', 2, 'https://example2.com', 'Link 2'),
@@ -96,7 +96,7 @@ VALUES
     ('5', 'user2', 4, 'https://example4.com', 'Link 4');
 
 -- Insert more links for user3
-INSERT INTO UserQuickLink (id, user_id, link_id, url, link_name)
+INSERT INTO UserQuickLink (id, username, link_id, url, link_name)
 VALUES
     ('6', 'user3', 2, 'https://example2.com', 'Link 2'),
     ('7', 'user3', 5, 'https://example5.com', 'Link 5');

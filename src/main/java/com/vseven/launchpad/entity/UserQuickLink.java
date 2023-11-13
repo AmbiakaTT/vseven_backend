@@ -21,14 +21,15 @@ public class UserQuickLink {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name="id")
+    private Integer userQuickLinkId;
 
     @ManyToOne
     @JsonIgnore
     @JsonBackReference
     @JoinColumns({
             @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            @JoinColumn(name = "username", referencedColumnName = "username") ,
+            @JoinColumn(name = "user_name", referencedColumnName = "user_name") ,
     })
     private User user;
 
@@ -48,10 +49,10 @@ public class UserQuickLink {
     @Override
     public String toString() {
         return "UserQuickLink{" +
-                "ID=" + getId() +
+                "ID=" + getUserQuickLinkId() +
                 ", UserID=" + getUser().getUserId() +
                 ", UserName='" + getUser().getUserName() + '\'' +
-                ", LinkID=" + getLink().getId() +
+                ", LinkID=" + getLink().getLinkId() +
                 ", LinkName='" + getLink().getLinkName() + '\'' +
                 ", LinkURL='" + getLink().getUrl() + '\'' +
                 '}';

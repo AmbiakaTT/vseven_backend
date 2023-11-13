@@ -17,7 +17,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.sql.DataSource;
+import javax.sql.*;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -35,10 +35,10 @@ public class SecurityConfig {
         JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
 
         userDetailsManager.setUsersByUsernameQuery(
-                "SELECT username, password_hash, enabled FROM Users WHERE username = ?"
+                "SELECT user_name, password_hash, enabled FROM users WHERE user_name = ?"
         );
         userDetailsManager.setAuthoritiesByUsernameQuery(
-                "SELECT username, authority FROM Authorities WHERE username = ?"
+                "SELECT username, authority FROM authorities WHERE username  = ?"
         );
         return userDetailsManager;
     }
