@@ -15,7 +15,7 @@ import java.util.List;
 public class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "link_id")
     private Integer linkId;
 
     @Column(name = "section_id")
