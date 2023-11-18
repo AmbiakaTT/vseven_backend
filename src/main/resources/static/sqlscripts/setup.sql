@@ -1,7 +1,7 @@
 CREATE TABLE `UserQuickLink` (
-  `id` int PRIMARY KEY,
+  `user_quicklink_id` int PRIMARY KEY,
   `user_id` int, 
-   `user_name` varchar(255),
+  `user_name` varchar(255),
   `link_id` int,
   `url` varchar(255),
   `link_name` varchar(255)
