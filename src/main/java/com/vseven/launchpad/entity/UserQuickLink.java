@@ -27,8 +27,9 @@ public class UserQuickLink {
     @ManyToOne
     @JsonIgnore
     @JsonBackReference
+    @Getter
     @JoinColumns({
-            @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             @JoinColumn(name = "user_name", referencedColumnName = "user_name") ,
     })
     private User user;
@@ -39,7 +40,7 @@ public class UserQuickLink {
     @Getter
     @NotNull
     @JoinColumns({
-            @JoinColumn(name = "link_id", referencedColumnName = "id"),
+            @JoinColumn(name = "link_id", referencedColumnName = "link_id"),
             @JoinColumn(name = "url", referencedColumnName = "url") ,
             @JoinColumn(name = "link_name", referencedColumnName = "link_name") ,
     })
