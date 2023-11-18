@@ -54,25 +54,24 @@ CREATE TABLE `authorities` (
   `username` varchar(255)
 );
 
-ALTER TABLE `UserQuickLink` ADD CONSTRAINT `FK_UserQuickLink_User` FOREIGN KEY (`username`) REFERENCES `users` (`username`);
+ALTER TABLE `UserQuickLink` ADD CONSTRAINT `FK_UserQuickLink_User` FOREIGN KEY (`user_name`) REFERENCES `users` (`user_name`);
 
-ALTER TABLE `UserQuickLink` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+ALTER TABLE `UserQuickLink` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`);
 
-ALTER TABLE `Link` ADD FOREIGN KEY (`id`) REFERENCES `UserQuickLink` (`link_id`);
+ALTER TABLE `Link` ADD FOREIGN KEY (`link_id`) REFERENCES `UserQuickLink` (`link_id`);
 
-ALTER TABLE `authority` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+ALTER TABLE `authority` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`);
 
 ALTER TABLE `UserQuickLink` ADD FOREIGN KEY (`url`) REFERENCES `Link` (`url`);
 
 ALTER TABLE `UserQuickLink` ADD FOREIGN KEY (`link_name`) REFERENCES `Link` (`link_name`);
 
-ALTER TABLE `authorities` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+ALTER TABLE `authorities` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`);
+
 
 
 -- Insert data into the User table
-
-
-INSERT INTO users (username, email, password_hash, enabled) VALUES
+INSERT INTO users (user_name, email, password_hash, enabled) VALUES
 ('user1', 'user1@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', true),
 ('user2', 'user2@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', true),
 ('user3', 'user3@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', true),
@@ -87,7 +86,7 @@ INSERT INTO authorities (user_id, authority, username) VALUES
 
 
 -- Insert data into the UserQuickLink table
-INSERT INTO UserQuickLink (id, username, link_id, url, link_name)
+INSERT INTO UserQuickLink (user_quicklink_id, user_name, link_id, url, link_name)
 VALUES
     ('1', 'user1', 1, 'https://example1.com', 'Link 1'),
     ('2', 'user2', 2, 'https://example2.com', 'Link 2'),
@@ -96,7 +95,7 @@ VALUES
     ('5', 'user2', 4, 'https://example4.com', 'Link 4');
 
 -- Insert more links for user3
-INSERT INTO UserQuickLink (id, username, link_id, url, link_name)
+INSERT INTO UserQuickLink (user_quicklink_id, user_name, link_id, url, link_name)
 VALUES
     ('6', 'user3', 2, 'https://example2.com', 'Link 2'),
     ('7', 'user3', 5, 'https://example5.com', 'Link 5');
