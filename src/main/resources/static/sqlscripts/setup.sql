@@ -26,11 +26,11 @@ CREATE TABLE `User` (
   `user_name` varchar(255),
   `email` varchar(255),
   `password_hash` varchar(255),
-  `enabled` boolean
+  `enabled` int
 );
 
 CREATE TABLE `Link` (
-  `id` integer PRIMARY KEY,
+  `link_id` integer PRIMARY KEY,
   `section_id` integer,
   `url` integer,
   `link_name` varchar(255)
