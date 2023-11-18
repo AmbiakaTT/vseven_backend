@@ -21,7 +21,7 @@ public class UserQuickLink {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="user_quicklink_id")
     private Integer userQuickLinkId;
 
     @ManyToOne
