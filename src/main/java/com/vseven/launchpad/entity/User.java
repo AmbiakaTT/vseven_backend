@@ -21,19 +21,20 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="user_id")
     private Integer userId;
 
     @Column(name="user_name")
     private String userName;
 
+    @Column(name = "email")
     private String email;
 
     @Column(name="password_hash")
     private String passwordHash;
-    
-    private Integer enabled;
 
+    @Column(name = "enabled")
+    private Integer enabled;
 
     @JsonIgnore
     @JsonManagedReference
