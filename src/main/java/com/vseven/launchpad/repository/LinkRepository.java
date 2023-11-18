@@ -7,8 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LinkRepository extends JpaRepository<Link, Long> {
-
-
-
-    // You can add custom query methods here if needed
 }

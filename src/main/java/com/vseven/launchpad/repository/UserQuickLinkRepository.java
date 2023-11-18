@@ -12,10 +12,5 @@ import java.util.List;
 
 @Repository
 public interface UserQuickLinkRepository extends JpaRepository<UserQuickLink, Integer> {
-
-    
-    //@Query(value = "SELECT * FROM userquicklink WHERE user_name  = :theUserName", nativeQuery = true)
-    //public List<UserQuickLink> findByUseruser_name (String user_name);
-    List<UserQuickLink> findByUserUserName(String userName);
-
+    List<UserQuickLink> findByUserUserName(String theUserName);
 }
