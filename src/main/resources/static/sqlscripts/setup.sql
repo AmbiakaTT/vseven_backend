@@ -22,11 +22,11 @@ CREATE TABLE `authority` (
 );
 
 CREATE TABLE `User` (
-  `id` integer PRIMARY KEY,
-  `username` varchar(255),
+  `user_id` integer PRIMARY KEY,
+  `user_name` varchar(255),
   `email` varchar(255),
   `password_hash` varchar(255),
-  `enabled` int
+  `enabled` boolean
 );
 
 CREATE TABLE `Link` (
