@@ -1,70 +1,50 @@
 package com.vseven.launchpad.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity
+import java.util.List;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties
+@Entity(name = "User")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name="user_id")
+    private Integer userId;
 
-    private String username;
+    @Column(name="user_name")
+    private String userName;
+
+    @Column(name = "email")
     private String email;
-    private String password;
 
-    private boolean enabled;
-    public enum AuthenticationType {
-        LOCAL,
-        SSO
+    @Column(name="password_hash")
+    private String passwordHash;
+
+    @Column(name = "enabled")
+    private Integer enabled;
+
+    @JsonIgnore
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    List<UserQuickLink> quickLinks;
+    
+    @JsonIgnore
+    @JsonManagedReference
+    public List<UserQuickLink> getQuickLinks() {
+        return quickLinks;
     }
-    private AuthenticationType authenticationType;
-
-    // Constructors, getters, and setters
-
-    public User() {
-        // Default constructor
-    }
-
-    public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-
-    // Getters and setters for attributes
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    
 }
