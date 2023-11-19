@@ -58,5 +58,6 @@ public class UserQuickLink {
                 ", LinkURL='" + getLink().getUrl() + '\'' +
                 '}';
     }
+    //test
 }
 

@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties
-@Entity(name = "users")
+@Entity(name = "User")
 public class User {
 
     @Id

@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Entity(name = "links")
+@Entity(name = "Link")
 public class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
