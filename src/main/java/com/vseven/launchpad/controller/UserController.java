@@ -27,8 +27,7 @@ public class UserController {
     public List<User> getAllUsers() {
         return userService.findAll();
     }
-
-
+    
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Integer id) {
         User user = userService.findById(id).orElse(null);

@@ -9,6 +9,6 @@ import java.util.List;
 public class QuickLinkDTO {
 
     private String username;
-    private List<Integer> 
+    private List<Integer> linksId;
 
 }
