@@ -84,5 +84,3 @@ VALUES
     (3, 1, 'user1', 3, 'https://example3.com', 'Link 3'),
     (4, 3, 'user3', 1, 'https://example1.com', 'Link 1'),
     (5, 2, 'user2', 4, 'https://example4.com', 'Link 4');
-
-

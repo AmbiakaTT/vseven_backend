@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 public class QuickLinkController {
 
     private UserQuickLinkRepository userQuickLinkRepository;
@@ -54,6 +54,12 @@ public class QuickLinkController {
 
         return ResponseEntity.ok(responseMap);
     }
+
+    @PostMapping
+    public ResponseEntity<String> deleteQuickLinks(@PathVariable String username, List<Integer> deleteList) {
+        
+    }
+
     @PostMapping("/reset")
     public ResponseEntity<String> resetToHomePage(@PathVariable String username) {
         return ResponseEntity.ok("{\"message\": \"Reset successful\"}");
