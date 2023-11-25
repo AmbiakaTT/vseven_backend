@@ -1,5 +1,6 @@
 package com.vseven.launchpad.repository;
 
+import com.vseven.launchpad.entity.User;
 import com.vseven.launchpad.entity.UserQuickLink;
 import jakarta.transaction.Transactional;
 import org.hibernate.annotations.NamedNativeQuery;
@@ -16,8 +17,20 @@ import java.util.List;
 public interface UserQuickLinkRepository extends JpaRepository<UserQuickLink, Integer> {
     List<UserQuickLink> findByUserUserName(String theUserName);
 
-    @Modifying
+
+
     @Transactional
-    @Query("DELETE FROM UserQuickLink uql WHERE uql.user.user_id = :userId AND uql.link.link_id IN :linkIds")
-    void deleteByUserIdAndLinkIds(@Param("userId") Integer userId, @Param("linkIds") List<Integer> linkIds);
+    @Modifying
+    @Query(value = "DELETE FROM userquicklink " +
+            "WHERE user_name= ?1 " +
+            "AND link_id IN (?2)", nativeQuery = true)
+    void deleteByUserNameAndLinkIdsNativeQuery(String a, List<Integer> b);
+
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO userquicklink " +
+            "WHERE user_name= ?1 " +
+            "AND link_id IN (?2)", nativeQuery = true)
+    void insertByUserNameAndLinkIdsNativeQuery(String a, List<Integer> b);
 }

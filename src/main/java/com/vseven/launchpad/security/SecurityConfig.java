@@ -51,10 +51,10 @@ public class SecurityConfig {
         return userDetailsManager;
     }
 
-    @Bean
-    public JWTAuthenticationFilter jwtAuthenticationFilter() {
-        return new JWTAuthenticationFilter();
-    }
+//    @Bean
+//    public JWTAuthenticationFilter jwtAuthenticationFilter() {
+//        return new JWTAuthenticationFilter();
+//    }
 
 
     @Bean
@@ -72,7 +72,8 @@ public class SecurityConfig {
                 )
                 
                 .csrf(AbstractHttpConfigurer::disable)
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .httpBasic(withDefaults())
+                //.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
