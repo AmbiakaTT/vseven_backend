@@ -2,7 +2,9 @@ package com.vseven.launchpad.controller;
 
 import com.vseven.launchpad.dto.request.QuickLinkDTO;
 import com.vseven.launchpad.entity.Link;
+import com.vseven.launchpad.entity.LinkClick;
 import com.vseven.launchpad.entity.User;
+import com.vseven.launchpad.repository.LinkClickRepository;
 import com.vseven.launchpad.repository.LinkRepository;
 import com.vseven.launchpad.repository.UserQuickLinkRepository;
 import com.vseven.launchpad.repository.UserRepository;
@@ -29,11 +31,14 @@ public class QuickLinkController {
 
     private LinkRepository linkRepository;
 
+    private LinkClickRepository linkClickRepository;
+
     @Autowired
-    public QuickLinkController(UserQuickLinkRepository theuserQuickLinkRepository, UserRepository theuserRepository, LinkRepository theLinkRepository) {
+    public QuickLinkController(UserQuickLinkRepository theuserQuickLinkRepository, UserRepository theuserRepository, LinkRepository theLinkRepository, LinkClickRepository theLinkClickRepository) {
         userQuickLinkRepository = theuserQuickLinkRepository;
         userRepository = theuserRepository;
         linkRepository = theLinkRepository;
+        linkClickRepository = theLinkClickRepository;
     }
 
     @GetMapping("/{username}/get")
@@ -111,4 +116,25 @@ public class QuickLinkController {
     }
 
 
+    @GetMapping("/getTopLinks")
+    public ResponseEntity<?> getTopLinks() {
+        List<LinkClick> topLinks = linkClickRepository.findTop5ByOrderByNumOfClicksDesc();
+        Map<String, Object> responseMap = new HashMap<>();
+
+        List<Map<String, Object>> linkClicksContent = topLinks.stream()
+                .map(linkClick -> {
+                    Map<String, Object> linkClickMap = new HashMap<>();
+                    linkClickMap.put("linkId", linkClick.getLink().getLinkId());
+                    linkClickMap.put("LinkName", linkClick.getLink().getLinkName());
+                    linkClickMap.put("Url", linkClick.getLink().getUrl());
+                    linkClickMap.put("numOfClicks", linkClick.getNumOfClicks());
+                    // Add more properties as needed
+                    return linkClickMap;
+                })
+                .toList();
+        responseMap.put("topClickedLinks", linkClicksContent);
+
+        return ResponseEntity.ok(responseMap);
+    }
 }
+

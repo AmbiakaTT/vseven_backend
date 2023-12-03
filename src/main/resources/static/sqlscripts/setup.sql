@@ -144,3 +144,28 @@ INSERT INTO Link (link_id, section_id, link_name, url) VALUES
 -- Section 10
 (44, '10', 'General Enquiries', 'https://vinuni.edu.vn/contact/'),
 (45, '10', 'Alumni Network', '');
+
+
+-- Create LinkClicks table
+CREATE TABLE `LinkClick` (
+  `link_click_id` INT PRIMARY KEY,
+  `link_id` INT,
+  `num_of_clicks` INT,
+  FOREIGN KEY (link_id) REFERENCES Link(link_id)
+);
+
+INSERT INTO `LinkClick` (`link_click_id`, `link_id`, `num_of_clicks`)
+VALUES
+  (1, 1, 10),
+  (2, 2, 15),
+  (3, 3, 20),
+  (4, 4, 8),
+  (5, 5, 12),
+  (6, 6, 5),
+  (7, 7, 18),
+  (8, 8, 9),
+  (9, 9, 14),
+  (10, 10, 22),
+  (11, 11, 7),
+  (12, 12, 16),
+  (13, 13, 11);
