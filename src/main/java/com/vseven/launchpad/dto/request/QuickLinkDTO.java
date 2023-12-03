@@ -1,4 +1,4 @@
-package com.vseven.launchpad.dto;
+package com.vseven.launchpad.dto.request;
 
 
 import lombok.Data;
@@ -7,8 +7,5 @@ import java.util.List;
 
 @Data
 public class QuickLinkDTO {
-
-    private String username;
     private List<Integer> linksId;
-
 }

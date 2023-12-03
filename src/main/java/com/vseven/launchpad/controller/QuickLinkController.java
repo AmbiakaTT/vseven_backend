@@ -1,12 +1,11 @@
 package com.vseven.launchpad.controller;
 
-import com.vseven.launchpad.dto.QuickLinkDTO;
+import com.vseven.launchpad.dto.request.QuickLinkDTO;
 import com.vseven.launchpad.entity.Link;
 import com.vseven.launchpad.entity.User;
 import com.vseven.launchpad.repository.LinkRepository;
 import com.vseven.launchpad.repository.UserQuickLinkRepository;
 import com.vseven.launchpad.repository.UserRepository;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,6 @@ import com.vseven.launchpad.entity.UserQuickLink;
 import java.util.*;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -26,8 +24,7 @@ import java.util.List;
 public class QuickLinkController {
 
     private UserQuickLinkRepository userQuickLinkRepository;
-
-
+    
     private UserRepository userRepository;
 
     private LinkRepository linkRepository;
@@ -48,12 +45,12 @@ public class QuickLinkController {
         }
 
         Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("username", username);
+        responseMap.put("userName", username);
 
         List<Map<String, Object>> quickLinksContent = quickLinksList.stream()
                 .map(quickLink -> {
                     Map<String, Object> quickLinkMap = new HashMap<>();
-                    quickLinkMap.put("id", quickLink.getLink().getLinkId());
+                    quickLinkMap.put("linkId", quickLink.getLink().getLinkId());
                     quickLinkMap.put("LinkName", quickLink.getLink().getLinkName());
                     quickLinkMap.put("Url", quickLink.getLink().getUrl());
                     // Add more properties as needed
@@ -61,15 +58,14 @@ public class QuickLinkController {
                 })
                 .toList();
 
-        responseMap.put("quickLinks", quickLinksContent);
+        responseMap.put("userQuickLinks", quickLinksContent);
 
         return ResponseEntity.ok(responseMap);
     }
 
 
-    @PostMapping("/saveUserQuickLinks")
-    public ResponseEntity<String> saveUserQuickLinks(@RequestBody QuickLinkDTO quickLinkDTO) {
-        String username = quickLinkDTO.getUsername();
+    @PostMapping("/{username}/save")
+    public ResponseEntity<String> saveUserQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
         List<Integer> linkIds = quickLinkDTO.getLinksId();
 
         User user = userRepository.findByUserName(username);
@@ -98,11 +94,9 @@ public class QuickLinkController {
         return ResponseEntity.ok("Operation completed successfully");
     }
 
-    @PostMapping("/delete")
-    public ResponseEntity<String> deleteQuickLinks(@RequestBody QuickLinkDTO quickLinkDTO) {
-        String username = quickLinkDTO.getUsername();
+    @PostMapping("/{username}/unbookmark")
+    public ResponseEntity<String> deleteQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
         List<Integer> linkIds = quickLinkDTO.getLinksId();
-
         try {
             userQuickLinkRepository.deleteByUserNameAndLinkIdsNativeQuery(username, linkIds);
             return ResponseEntity.ok("Deletion completed successfully");
@@ -116,9 +110,5 @@ public class QuickLinkController {
         return ResponseEntity.ok("{\"message\": \"Reset successful\"}");
     }
 
-//    @PostMapping("/save")
-//    public ResponseEntity<String> saveQuickLinks(@PathVariable String username) {
-//        return ResponseEntity.ok("{\"message\": \"Reset successful\"}");
-//    }
 
 }

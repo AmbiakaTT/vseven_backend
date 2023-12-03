@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "userquicklink")
+@Entity(name = "UserQuickLink")
 public class UserQuickLink {
 
     @Id

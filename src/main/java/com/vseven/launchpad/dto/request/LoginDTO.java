@@ -1,4 +1,4 @@
-package com.vseven.launchpad.dto;
+package com.vseven.launchpad.dto.request;
 
 import lombok.Data;
 @Data
