@@ -49,8 +49,8 @@ public class QuickLinkController {
                 .map(quickLink -> {
                     Map<String, Object> quickLinkMap = new HashMap<>();
                     quickLinkMap.put("linkId", quickLink.getLink().getLinkId());
-                    quickLinkMap.put("LinkName", quickLink.getLink().getLinkName());
-                    quickLinkMap.put("Url", quickLink.getLink().getUrl());
+                    quickLinkMap.put("linkName", quickLink.getLink().getLinkName());
+                    quickLinkMap.put("url", quickLink.getLink().getUrl());
                     // Add more properties as needed
                     return quickLinkMap;
                 })
