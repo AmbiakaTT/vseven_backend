@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "userquicklink")
+@Entity(name = "UserQuickLink")
 public class UserQuickLink {
 
     @Id
@@ -41,7 +41,6 @@ public class UserQuickLink {
     @NotNull
     @JoinColumns({
             @JoinColumn(name = "link_id", referencedColumnName = "link_id"),
-            @JoinColumn(name = "url", referencedColumnName = "url") ,
             @JoinColumn(name = "link_name", referencedColumnName = "link_name") ,
     })
     private Link link;
