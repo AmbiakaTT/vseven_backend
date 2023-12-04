@@ -3,11 +3,12 @@ package com.vseven.launchpad.controller;
 import com.vseven.launchpad.dto.request.QuickLinkDTO;
 import com.vseven.launchpad.entity.Link;
 import com.vseven.launchpad.entity.User;
+import com.vseven.launchpad.exception.ResourceNotFoundException;
+import com.vseven.launchpad.exception.response.ErrorDictionary;
 import com.vseven.launchpad.repository.LinkRepository;
 import com.vseven.launchpad.repository.UserQuickLinkRepository;
 import com.vseven.launchpad.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.vseven.launchpad.entity.UserQuickLink;
@@ -24,7 +25,7 @@ import java.util.List;
 public class QuickLinkController {
 
     private UserQuickLinkRepository userQuickLinkRepository;
-    
+
     private UserRepository userRepository;
 
     private LinkRepository linkRepository;
@@ -41,7 +42,7 @@ public class QuickLinkController {
         List<UserQuickLink> quickLinksList = userQuickLinkRepository.findByUserUserName(username);
 
         if (quickLinksList == null || quickLinksList.isEmpty()) {
-            throw new ResourceNotFoundException("No quick links found for user: " + username);
+            throw new ResourceNotFoundException(ErrorDictionary.NF_001);
         }
 
         Map<String, Object> responseMap = new HashMap<>();
