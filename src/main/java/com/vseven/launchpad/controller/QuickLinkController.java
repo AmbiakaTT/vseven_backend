@@ -8,9 +8,7 @@ import com.vseven.launchpad.exception.response.ErrorDictionary;
 import com.vseven.launchpad.repository.LinkRepository;
 import com.vseven.launchpad.repository.UserQuickLinkRepository;
 import com.vseven.launchpad.repository.UserRepository;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,12 +33,6 @@ public class QuickLinkController {
 
     private final LinkRepository linkRepository;
 
-//    @Autowired
-//    public QuickLinkController(UserQuickLinkRepository theuserQuickLinkRepository, UserRepository theuserRepository, LinkRepository theLinkRepository) {
-//        userQuickLinkRepository = theuserQuickLinkRepository;
-//        userRepository = theuserRepository;
-//        linkRepository = theLinkRepository;
-//    }
 
     @GetMapping("/{username}/get")
     public ResponseEntity<?> getQuickLinks(@PathVariable String username) {
