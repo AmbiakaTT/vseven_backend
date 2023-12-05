@@ -1,7 +1,8 @@
 package com.vseven.launchpad.exception.response;
 
 public enum ErrorDictionary {
-    NF_001("QuickLink not found");
+    NF_001("QuickLink not found"),
+    NF_002("User not found");
 
     private String errorMessage;
 

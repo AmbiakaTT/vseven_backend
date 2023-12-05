@@ -69,7 +69,7 @@ public class QuickLinkController {
         User user = userRepository.findByUserName(username);
         if (user == null) {
             // Handle the case where the user with the specified username is not found
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
 
         for (Integer linkId : linkIds) {
