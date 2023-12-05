@@ -63,11 +63,10 @@ public class QuickLinkController {
 
 
     @PostMapping("/{username}/save")
-    public ResponseEntity<String> saveUserQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
+    public ResponseEntity<?> saveUserQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
         List<Integer> linkIds = quickLinkDTO.getLinksId();
 
         User user = userRepository.findByUserName(username);
-
         if (user == null) {
             // Handle the case where the user with the specified username is not found
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
@@ -88,8 +87,10 @@ public class QuickLinkController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Link not found for ID: " + linkId);
             }
         }
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("message", "Successfully Saved");
 
-        return ResponseEntity.ok("Operation completed successfully");
+        return ResponseEntity.ok(responseMap);
     }
 
     @PostMapping("/{username}/unbookmark")
