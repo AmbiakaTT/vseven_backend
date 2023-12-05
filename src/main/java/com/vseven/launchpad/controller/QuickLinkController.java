@@ -94,11 +94,22 @@ public class QuickLinkController {
     }
 
     @PostMapping("/{username}/unbookmark")
-    public ResponseEntity<String> deleteQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
+    public ResponseEntity<?> deleteQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
         List<Integer> linkIds = quickLinkDTO.getLinksId();
+
+        User user = userRepository.findByUserName(username);
+        if (user == null) {
+            // Handle the case where the user with the specified username is not found
+            throw new ResourceNotFoundException(ErrorDictionary.NF_002);
+        }
+
         try {
             userQuickLinkRepository.deleteByUserNameAndLinkIdsNativeQuery(username, linkIds);
-            return ResponseEntity.ok("Deletion completed successfully");
+
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("message", "Successfully Unbookmark");
+
+            return ResponseEntity.ok(responseMap);
         } catch (Exception e) {
             // Log the exception or handle it as appropriate for your application
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred during deletion");
