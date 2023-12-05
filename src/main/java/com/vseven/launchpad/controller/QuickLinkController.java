@@ -84,7 +84,7 @@ public class QuickLinkController {
                 userQuickLinkRepository.save(userQuickLink);
             } else {
                 // Handle the case where the link with the specified ID is not found
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Link not found for ID: " + linkId);
+                throw new ResourceNotFoundException(ErrorDictionary.NF_003);
             }
         }
         Map<String, Object> responseMap = new HashMap<>();
