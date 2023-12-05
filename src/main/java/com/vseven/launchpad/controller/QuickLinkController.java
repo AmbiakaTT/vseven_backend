@@ -115,7 +115,7 @@ public class QuickLinkController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred during deletion");
         }
     }
-    @PostMapping("/reset")
+    @PostMapping("/{username}/reset")
     public ResponseEntity<String> resetToHomePage(@PathVariable String username) {
         return ResponseEntity.ok("{\"message\": \"Reset successful\"}");
     }
