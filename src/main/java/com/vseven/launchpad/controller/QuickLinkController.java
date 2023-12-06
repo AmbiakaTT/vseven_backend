@@ -117,6 +117,19 @@ public class QuickLinkController {
     }
     @PostMapping("/{username}/reset")
     public ResponseEntity<String> resetToHomePage(@PathVariable String username) {
+
+        User user = userRepository.findByUserName(username);
+        if (user == null) {
+            // Handle the case where the user with the specified username is not found
+            throw new ResourceNotFoundException(ErrorDictionary.NF_002);
+        }
+        try {
+            userQuickLinkRepository.resetUserQuickLinkNativeQuery(username);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred during reset");
+
+        }
         return ResponseEntity.ok("{\"message\": \"Reset successful\"}");
     }
 
