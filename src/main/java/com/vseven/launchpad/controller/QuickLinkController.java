@@ -116,7 +116,7 @@ public class QuickLinkController {
         }
     }
     @PostMapping("/{username}/reset")
-    public ResponseEntity<String> resetToHomePage(@PathVariable String username) {
+    public ResponseEntity<?> resetToHomePage(@PathVariable String username) {
 
         User user = userRepository.findByUserName(username);
         if (user == null) {
@@ -130,7 +130,10 @@ public class QuickLinkController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred during reset");
 
         }
-        return ResponseEntity.ok("{\"message\": \"Reset successful\"}");
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("message", "Successfully Reset");
+
+        return ResponseEntity.ok(responseMap);
     }
 
 
