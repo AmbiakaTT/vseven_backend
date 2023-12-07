@@ -33,7 +33,6 @@ public class QuickLinkController {
 
     private final LinkRepository linkRepository;
 
-
     @GetMapping("/{username}/get")
     public ResponseEntity<?> getQuickLinks(@PathVariable String username) {
         List<UserQuickLink> quickLinksList = userQuickLinkRepository.findByUserUserName(username);
@@ -68,7 +67,6 @@ public class QuickLinkController {
 
         User user = userRepository.findByUserName(username);
         if (user == null) {
-            // Handle the case where the user with the specified username is not found
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
 
@@ -83,7 +81,6 @@ public class QuickLinkController {
                 userQuickLink.setLink(link);
                 userQuickLinkRepository.save(userQuickLink);
             } else {
-                // Handle the case where the link with the specified ID is not found
                 throw new ResourceNotFoundException(ErrorDictionary.NF_003);
             }
         }
@@ -99,7 +96,6 @@ public class QuickLinkController {
 
         User user = userRepository.findByUserName(username);
         if (user == null) {
-            // Handle the case where the user with the specified username is not found
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
 
@@ -120,7 +116,6 @@ public class QuickLinkController {
 
         User user = userRepository.findByUserName(username);
         if (user == null) {
-            // Handle the case where the user with the specified username is not found
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
         try {
