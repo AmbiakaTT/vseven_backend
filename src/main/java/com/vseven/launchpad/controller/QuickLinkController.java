@@ -74,8 +74,9 @@ public class QuickLinkController {
 
         for (Integer linkId : linkIds) {
             Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(linkId));
-
-            if (linkOptional.isPresent()) {
+            Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, linkId);
+            //System.out.println(quickLinkOptional);
+            if (linkOptional.isPresent() && !quickLinkOptional.isPresent()) {
                 Link link = linkOptional.get();
 
                 UserQuickLink userQuickLink = new UserQuickLink();
@@ -84,7 +85,11 @@ public class QuickLinkController {
                 userQuickLinkRepository.save(userQuickLink);
             } else {
                 // Handle the case where the link with the specified ID is not found
-                throw new ResourceNotFoundException(ErrorDictionary.NF_003);
+                if (!linkOptional.isPresent()) {
+                    throw new ResourceNotFoundException(ErrorDictionary.NF_003);
+                } else {
+                    throw new ResourceNotFoundException(ErrorDictionary.NF_004);
+                }
             }
         }
         Map<String, Object> responseMap = new HashMap<>();
@@ -102,19 +107,27 @@ public class QuickLinkController {
             // Handle the case where the user with the specified username is not found
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
-
-        try {
-            userQuickLinkRepository.deleteByUserNameAndLinkIdsNativeQuery(username, linkIds);
-
-            Map<String, Object> responseMap = new HashMap<>();
-            responseMap.put("message", "Successfully Unbookmark");
-
-            return ResponseEntity.ok(responseMap);
-        } catch (Exception e) {
-            // Log the exception or handle it as appropriate for your application
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred during deletion");
+        //userQuickLinkRepository.deleteByUserNameAndLinkIdsNativeQuery(username, linkIds);
+        for (Integer id : linkIds) {
+            Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(id));
+            Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, id);
+            if (linkOptional.isPresent() && quickLinkOptional.isPresent()) {
+                userQuickLinkRepository.deleteByUserNameAndLinkId(username, id);
+            } else {
+                // Handle the case where the link with the specified ID is not found
+                if (!linkOptional.isPresent()) {
+                    throw new ResourceNotFoundException(ErrorDictionary.NF_005);
+                } else {
+                    throw new ResourceNotFoundException(ErrorDictionary.NF_003);
+                }
+            }
         }
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("message", "Successfully Unbookmark");
+
+        return ResponseEntity.ok(responseMap);
     }
+
     @PostMapping("/{username}/reset")
     public ResponseEntity<String> resetToHomePage(@PathVariable String username) {
 

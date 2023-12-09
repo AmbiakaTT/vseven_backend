@@ -1,5 +1,6 @@
 package com.vseven.launchpad.repository;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.vseven.launchpad.entity.User;
 import com.vseven.launchpad.entity.UserQuickLink;
 import jakarta.transaction.Transactional;
@@ -11,13 +12,25 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
 public interface UserQuickLinkRepository extends JpaRepository<UserQuickLink, Integer> {
     List<UserQuickLink> findByUserUserName(String theUserName);
 
+    @Query(value = "SELECT * FROM UserQuickLink " +
+            "where user_name= ?1 " +
+            "AND link_id= ?2", nativeQuery = true)
+    Optional<UserQuickLink> findByUserNameAndLinkId(String username, Integer linkId);
 
+
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM UserQuickLink " +
+            "where user_name= ?1 " +
+            "AND link_id= ?2", nativeQuery = true)
+    void deleteByUserNameAndLinkId(String username, Integer linkId);
 
     @Transactional
     @Modifying
