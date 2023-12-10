@@ -68,14 +68,13 @@ public class QuickLinkController {
 
         User user = userRepository.findByUserName(username);
         if (user == null) {
-            // Handle the case where the user with the specified username is not found
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
 
         for (Integer linkId : linkIds) {
             Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(linkId));
             Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, linkId);
-            //System.out.println(quickLinkOptional);
+
             if (linkOptional.isPresent() && !quickLinkOptional.isPresent()) {
                 Link link = linkOptional.get();
 
@@ -86,7 +85,6 @@ public class QuickLinkController {
 
                 userQuickLinkRepository.save(userQuickLink);
             } else {
-                // Handle the case where the link with the specified ID is not found
                 if (!linkOptional.isPresent()) {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_003);
                 } else {
@@ -106,7 +104,6 @@ public class QuickLinkController {
 
         User user = userRepository.findByUserName(username);
         if (user == null) {
-            // Handle the case where the user with the specified username is not found
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
         //userQuickLinkRepository.deleteByUserNameAndLinkIdsNativeQuery(username, linkIds);
@@ -116,7 +113,6 @@ public class QuickLinkController {
             if (linkOptional.isPresent() && quickLinkOptional.isPresent()) {
                 userQuickLinkRepository.deleteByUserNameAndLinkId(username, id);
             } else {
-                // Handle the case where the link with the specified ID is not found
                 if (!linkOptional.isPresent()) {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_005);
                 } else {
@@ -135,7 +131,6 @@ public class QuickLinkController {
 
         User user = userRepository.findByUserName(username);
         if (user == null) {
-            // Handle the case where the user with the specified username is not found
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
         try {
