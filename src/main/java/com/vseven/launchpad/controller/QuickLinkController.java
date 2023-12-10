@@ -106,7 +106,7 @@ public class QuickLinkController {
         if (user == null) {
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
-        //userQuickLinkRepository.deleteByUserNameAndLinkIdsNativeQuery(username, linkIds);
+
         for (Integer id : linkIds) {
             Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(id));
             Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, id);
