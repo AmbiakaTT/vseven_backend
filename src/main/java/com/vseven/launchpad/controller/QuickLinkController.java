@@ -86,7 +86,7 @@ public class QuickLinkController {
                 userQuickLinkRepository.save(userQuickLink);
             } else {
                 if (!linkOptional.isPresent()) {
-                    throw new ResourceNotFoundException(ErrorDictionary.NF_003);
+                    throw new ResourceNotFoundException(ErrorDictionary.NF_005);
                 } else {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_004);
                 }
