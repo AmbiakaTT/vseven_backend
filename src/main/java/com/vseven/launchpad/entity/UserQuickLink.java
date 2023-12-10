@@ -6,17 +6,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "userquicklink")
+@Builder
+@Entity(name = "UserQuickLink")
 public class UserQuickLink {
 
     @Id
@@ -41,7 +39,6 @@ public class UserQuickLink {
     @NotNull
     @JoinColumns({
             @JoinColumn(name = "link_id", referencedColumnName = "link_id"),
-            @JoinColumn(name = "url", referencedColumnName = "url") ,
             @JoinColumn(name = "link_name", referencedColumnName = "link_name") ,
     })
     private Link link;
