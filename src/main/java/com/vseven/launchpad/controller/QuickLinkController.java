@@ -36,6 +36,11 @@ public class QuickLinkController {
 
     @GetMapping("/{username}/get")
     public ResponseEntity<?> getQuickLinks(@PathVariable String username) {
+        User user = userRepository.findByUserName(username);
+        if (user == null) {
+            throw new ResourceNotFoundException(ErrorDictionary.NF_002);
+        }
+
         List<UserQuickLink> quickLinksList = userQuickLinkRepository.findByUserUserName(username);
 
         if (quickLinksList == null || quickLinksList.isEmpty()) {
