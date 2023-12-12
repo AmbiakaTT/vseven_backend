@@ -144,3 +144,65 @@ INSERT INTO Link (link_id, section_id, link_name, url) VALUES
 -- Section 10
 (44, '10', 'General Enquiries', 'https://vinuni.edu.vn/contact/'),
 (45, '10', 'Alumni Network', '');
+
+
+CREATE TABLE LinkClicks (
+    link_click_id INT PRIMARY KEY,
+    link_id INT,
+    num_of_clicks INT,
+    FOREIGN KEY (link_id) REFERENCES Link(link_id)
+);
+
+INSERT INTO LinkClicks (link_click_id, link_id, num_of_clicks) VALUES
+(1, 1, 20),
+(2, 2, 15),
+(3, 3, 10),
+(4, 4, 25),
+(5, 5, 18);
+
+
+CREATE TABLE SectionOrder (
+  section_order_id INT PRIMARY KEY,
+  user_id INT,
+  section_id INT,
+  section_order INT,
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (section_id) REFERENCES Section(section_id)
+);
+
+
+INSERT INTO SectionOrder (section_order_id, user_id, section_id, section_order)
+VALUES
+  (1, 1, 1, 1),
+  (2, 2, 2, 2),
+  (3, 3, 1, 3),
+  (4, 4, 3, 1),
+  (5, 5, 2, 2),
+  (6, 1, 2, 4),
+  (7, 2, 3, 3),
+  (8, 3, 2, 1),
+  (9, 4, 1, 2),
+  (10, 5, 3, 4),
+  (11, 1, 1, 5),
+  (12, 2, 2, 2),
+  (13, 3, 1, 1),
+  (14, 4, 3, 3),
+  (15, 5, 2, 1);
+
+
+ CREATE TABLE LinkOrder (
+       link_order_id INT PRIMARY KEY,
+       user_id INT,
+       link_id INT,
+       link_order INT,
+       section_id INT,
+       FOREIGN KEY (user_id) REFERENCES users(user_id),
+       FOREIGN KEY (section_id) REFERENCES Section(section_id),
+       FOREIGN KEY (link_id) REFERENCES Link(link_id)
+   );
+
+
+   INSERT INTO LinkOrder (link_order_id, user_id, link_id, section_id,  link_order) VALUES
+   (1, 1, 1, 1, 2),
+   (2, 1, 2, 1, 3),
+   (3, 1, 3, 1, 1);

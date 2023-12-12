@@ -1,18 +1,14 @@
 package com.vseven.launchpad.controller;
 
 import com.vseven.launchpad.dto.request.QuickLinkDTO;
-import com.vseven.launchpad.entity.Link;
-import com.vseven.launchpad.entity.User;
+import com.vseven.launchpad.entity.*;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
 import com.vseven.launchpad.exception.response.ErrorDictionary;
-import com.vseven.launchpad.repository.LinkRepository;
-import com.vseven.launchpad.repository.UserQuickLinkRepository;
-import com.vseven.launchpad.repository.UserRepository;
+import com.vseven.launchpad.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.vseven.launchpad.entity.UserQuickLink;
 
 import java.util.*;
 
@@ -33,7 +29,10 @@ public class QuickLinkController {
 
     private final LinkRepository linkRepository;
 
+    private final SectionOrderRepository sectionOrderRepository;
 
+    private final LinkOrderRepository linkOrderRepository;
+    
     @GetMapping("/{username}/get")
     public ResponseEntity<?> getQuickLinks(@PathVariable String username) {
         User user = userRepository.findByUserName(username);
@@ -43,6 +42,10 @@ public class QuickLinkController {
 
         List<UserQuickLink> quickLinksList = userQuickLinkRepository.findByUserUserName(username);
 
+        List<SectionOrder> sectionOrdersList = sectionOrderRepository.findByUserUserName(username);
+
+        List<LinkOrder> linkOrderList = linkOrderRepository.findByUserUserName(username);
+        
         if (quickLinksList == null || quickLinksList.isEmpty()) {
             throw new ResourceNotFoundException(ErrorDictionary.NF_001);
         }
@@ -61,7 +64,33 @@ public class QuickLinkController {
                 })
                 .toList();
 
+        List<Map<String, Object>> sectionOrderContent = sectionOrdersList.stream()
+                .map(sectionOrder -> {
+                    Map<String, Object> sectionOrderMap = new HashMap<>();
+                    sectionOrderMap.put("sectionId", sectionOrder.getSection().getSectionId());
+                    sectionOrderMap.put("sectionName", sectionOrder.getSection().getSectionName());
+                    sectionOrderMap.put("order", sectionOrder.getSectionOrder());
+                    // Add more properties as needed
+                    return sectionOrderMap;
+                })
+                .toList();
+
+
+        List<Map<String, Object>> linkOrderContent = linkOrderList.stream()
+                .map(linkOrder -> {
+                    Map<String, Object> linkOrderMap = new HashMap<>();
+                    linkOrderMap.put("sectionId", linkOrder.getSection().getSectionId());
+                    linkOrderMap.put("sectionName", linkOrder.getSection().getSectionName());
+                    linkOrderMap.put("order", linkOrder.getLinkOrder());
+                    // Add more properties as needed
+                    return linkOrderMap;
+                })
+                .toList();
+
         responseMap.put("userQuickLinks", quickLinksContent);
+        responseMap.put("sectionOrder", sectionOrderContent);
+        responseMap.put("linkOrder", linkOrderContent);
+
 
         return ResponseEntity.ok(responseMap);
     }
