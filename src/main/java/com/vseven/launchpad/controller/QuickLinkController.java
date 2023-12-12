@@ -2,9 +2,11 @@ package com.vseven.launchpad.controller;
 
 import com.vseven.launchpad.dto.request.QuickLinkDTO;
 import com.vseven.launchpad.entity.Link;
+import com.vseven.launchpad.entity.LinkClick;
 import com.vseven.launchpad.entity.User;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
 import com.vseven.launchpad.exception.response.ErrorDictionary;
+import com.vseven.launchpad.repository.LinkClickRepository;
 import com.vseven.launchpad.repository.LinkRepository;
 import com.vseven.launchpad.repository.UserQuickLinkRepository;
 import com.vseven.launchpad.repository.UserRepository;
@@ -17,6 +19,7 @@ import com.vseven.launchpad.entity.UserQuickLink;
 import java.util.*;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -33,7 +36,9 @@ public class QuickLinkController {
 
     private final LinkRepository linkRepository;
 
+    private final LinkClickRepository linkClickRepository;
 
+    
     @GetMapping("/{username}/get")
     public ResponseEntity<?> getQuickLinks(@PathVariable String username) {
         User user = userRepository.findByUserName(username);
@@ -152,5 +157,29 @@ public class QuickLinkController {
         return ResponseEntity.ok(responseMap);
     }
 
+
+    @GetMapping("/top-clicked-links")
+    public ResponseEntity<?> getTopLinks() {
+
+        //responseMap.put("Top 5 links", )
+        List<LinkClick> topLinks  = linkClickRepository.findTop5ByOrderByNumOfClicksDesc();
+
+        List<Map<String, Object>> topLinksContent = topLinks.stream()
+                .map(topLink -> {
+                    Map<String, Object> topLinksMap = new HashMap<>();
+                    topLinksMap.put("linkId", topLink.getLink().getLinkId());
+                    topLinksMap.put("linkName", topLink.getLink().getLinkName());
+                    topLinksMap.put("url", topLink.getLink().getUrl());
+                    // Add more properties as needed
+                    return topLinksMap;
+                })
+                .toList();
+
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("topLinks", topLinksContent);
+
+        return ResponseEntity.ok(responseMap);
+
+    }
 
 }
