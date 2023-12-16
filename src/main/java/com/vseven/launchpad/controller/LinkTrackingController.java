@@ -24,7 +24,7 @@ public class LinkTrackingController {
 
     private final LinkClickRepository linkClickRepository;
 
-    @GetMapping("/top-clicked-links")
+    @GetMapping("/topLinks")
     public ResponseEntity<?> getTopLinks() {
 
         List<LinkClick> topLinks  = linkClickRepository.findTop5ByOrderByNumOfClicksDesc();
