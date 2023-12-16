@@ -1,10 +1,15 @@
 package com.vseven.launchpad.controller;
 
+import com.vseven.launchpad.dto.request.CombinedDTO;
+import com.vseven.launchpad.dto.request.LinkOrderDTO;
 import com.vseven.launchpad.dto.request.QuickLinkDTO;
+import com.vseven.launchpad.dto.request.SectionOrderDTO;
 import com.vseven.launchpad.entity.*;
+import com.vseven.launchpad.entity.SectionOrder;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
 import com.vseven.launchpad.exception.response.ErrorDictionary;
 import com.vseven.launchpad.repository.*;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -32,7 +37,9 @@ public class QuickLinkController {
     private final SectionOrderRepository sectionOrderRepository;
 
     private final LinkOrderRepository linkOrderRepository;
-    
+
+    private final SectionRepository sectionRepository;
+
     @GetMapping("/{username}/get")
     public ResponseEntity<?> getQuickLinks(@PathVariable String username) {
         User user = userRepository.findByUserName(username);
@@ -45,7 +52,7 @@ public class QuickLinkController {
         List<SectionOrder> sectionOrdersList = sectionOrderRepository.findByUserUserName(username);
 
         List<LinkOrder> linkOrderList = linkOrderRepository.findByUserUserName(username);
-        
+
         if (quickLinksList == null || quickLinksList.isEmpty()) {
             throw new ResourceNotFoundException(ErrorDictionary.NF_001);
         }
@@ -97,36 +104,77 @@ public class QuickLinkController {
 
 
     @PostMapping("/{username}/save")
-    public ResponseEntity<?> saveUserQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
-        List<Integer> linkIds = quickLinkDTO.getLinksId();
+    public ResponseEntity<?> saveUserQuickLinks(@PathVariable String username, @RequestBody  CombinedDTO combinedDTO) {
+
 
         User user = userRepository.findByUserName(username);
         if (user == null) {
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
 
-        for (Integer linkId : linkIds) {
-            Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(linkId));
-            Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, linkId);
+        QuickLinkDTO quicklinksDTO =  combinedDTO.getQuickLinkDTO();
 
-            if (linkOptional.isPresent() && !quickLinkOptional.isPresent()) {
-                Link link = linkOptional.get();
+        if (quicklinksDTO != null) {
+            List<Integer> linkIds = quicklinksDTO.getLinksId();
 
-                UserQuickLink userQuickLink = UserQuickLink.builder()
-                        .user(user)
-                        .link(link)
-                        .build();
+            for (Integer linkId : linkIds) {
+                Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(linkId));
+                Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, linkId);
 
-                userQuickLinkRepository.save(userQuickLink);
-            } else {
-                if (!linkOptional.isPresent()) {
-                    throw new ResourceNotFoundException(ErrorDictionary.NF_005);
+                if (linkOptional.isPresent() && !quickLinkOptional.isPresent()) {
+                    Link link = linkOptional.get();
+
+                    UserQuickLink userQuickLink = UserQuickLink.builder()
+                            .user(user)
+                            .link(link)
+                            .build();
+
+                    userQuickLinkRepository.save(userQuickLink);
                 } else {
-                    throw new ResourceNotFoundException(ErrorDictionary.NF_004);
+                    if (!linkOptional.isPresent()) {
+                        throw new ResourceNotFoundException(ErrorDictionary.NF_005);
+                    } else {
+                        throw new ResourceNotFoundException(ErrorDictionary.NF_004);
+                    }
                 }
             }
         }
         Map<String, Object> responseMap = new HashMap<>();
+
+
+        List<SectionOrderDTO> sectionOrderDTOList =  combinedDTO.getSectionOrderDTOList();
+        if (sectionOrderDTOList != null) {
+            System.out.println("Section order not null");
+            for (SectionOrderDTO sectionOrder : sectionOrderDTOList) {
+                Optional<Section> sectionOptional = sectionRepository.findById(sectionOrder.getSectionId());
+                if (sectionOptional.isPresent()) {
+                    sectionOrderRepository.saveSectionOrderNativeQuery(sectionOrder.getUserId(), sectionOrder.getSectionId(), sectionOrder.getOrder());
+
+                } else {
+                    throw new ResourceNotFoundException(ErrorDictionary.NF_006);
+                }
+            }
+        } else {
+            // Debugging purposes
+            System.out.println("Section order null");
+        }
+
+        List<LinkOrderDTO> linkOrderDTOList =  combinedDTO.getLinkOrderDTOList();
+
+        if (linkOrderDTOList != null) {
+            // Debugging purposes
+           // System.out.println("Hello I am not null");
+            for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
+                Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(linkOrderDTO.getLinkId()));
+                if (linkOptional.isPresent()) {
+                    linkOrderRepository.saveLinkOrderNativeQuery(linkOrderDTO.getUserId(), linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder(), linkOrderDTO.getLinkId());
+
+                } else {
+                    throw new ResourceNotFoundException(ErrorDictionary.NF_005);
+                }
+
+            }
+        }
         responseMap.put("message", "Successfully Saved");
 
         return ResponseEntity.ok(responseMap);

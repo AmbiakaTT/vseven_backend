@@ -147,10 +147,11 @@ INSERT INTO Link (link_id, section_id, link_name, url) VALUES
 
 
 CREATE TABLE LinkClicks (
-    link_click_id INT PRIMARY KEY,
+    link_click_id INT PRIMARY KEY AUTO_INCREMENT,
     link_id INT,
     num_of_clicks INT,
     FOREIGN KEY (link_id) REFERENCES Link(link_id)
+    UNIQUE (link_id)
 );
 
 INSERT INTO LinkClicks (link_click_id, link_id, num_of_clicks) VALUES
@@ -162,42 +163,40 @@ INSERT INTO LinkClicks (link_click_id, link_id, num_of_clicks) VALUES
 
 
 CREATE TABLE SectionOrder (
-  section_order_id INT PRIMARY KEY,
+  section_order_id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT,
   section_id INT,
   section_order INT,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
-  FOREIGN KEY (section_id) REFERENCES Section(section_id)
+  FOREIGN KEY (section_id) REFERENCES Section(section_id),
+  CONSTRAINT unique_user_section UNIQUE (user_id, section_id)
+
+
 );
 
 
+-- Insert dummy data into the SectionOrder table
 INSERT INTO SectionOrder (section_order_id, user_id, section_id, section_order)
 VALUES
-  (1, 1, 1, 1),
-  (2, 2, 2, 2),
-  (3, 3, 1, 3),
-  (4, 4, 3, 1),
-  (5, 5, 2, 2),
-  (6, 1, 2, 4),
-  (7, 2, 3, 3),
-  (8, 3, 2, 1),
-  (9, 4, 1, 2),
-  (10, 5, 3, 4),
-  (11, 1, 1, 5),
-  (12, 2, 2, 2),
-  (13, 3, 1, 1),
-  (14, 4, 3, 3),
-  (15, 5, 2, 1);
+  (1, 1, 1, 2),
+  (2, 1, 2, 3),
+  (3, 1, 3, 4),
+  (4, 2, 1, 2),
+  (5, 2, 2, 3),
+  (6, 3, 1, 2),
+  (7, 3, 2, 3);
 
 
  CREATE TABLE LinkOrder (
-       link_order_id INT PRIMARY KEY,
+       link_order_id INT PRIMARY KEY AUTO_INCREMENT,
        user_id INT,
        link_id INT,
        link_order INT,
        section_id INT,
        FOREIGN KEY (user_id) REFERENCES users(user_id),
        FOREIGN KEY (section_id) REFERENCES Section(section_id),
+       CONSTRAINT unique_user_link UNIQUE (user_id, link_id),
+       CONSTRAINT unique_user_section_link UNIQUE (user_id, section_id, link_id),
        FOREIGN KEY (link_id) REFERENCES Link(link_id)
    );
 
