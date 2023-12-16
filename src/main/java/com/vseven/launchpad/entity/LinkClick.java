@@ -19,6 +19,7 @@ public class LinkClick {
     @Column(name="link_click_id")
     private Integer linkClickId;
 
+    @Getter
     @JsonIgnore
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -29,4 +30,10 @@ public class LinkClick {
 
     @Column(name="num_of_clicks")
     private Integer numOfClicks;
+
+    public LinkClick (Integer theLinkId , Integer theNumOfCLicks ) {
+        linkClickId = theLinkId;
+        numOfClicks = theNumOfCLicks;
+    }
+
 }

@@ -41,10 +41,11 @@ CREATE TABLE Section (
 );
 
 CREATE TABLE `LinkClicks` (
-    link_click_id INT PRIMARY KEY,
+    link_click_id INT PRIMARY KEY AUTO_INCREMENT,
     link_id INT,
     num_of_clicks INT,
-    FOREIGN KEY (link_id) REFERENCES Link(link_id)
+    FOREIGN KEY (link_id) REFERENCES Link(link_id),
+    UNIQUE (link_id)
 );
 
 ALTER TABLE `UserQuickLink` ADD FOREIGN KEY (`user_name`) REFERENCES `User` (`user_name`);
@@ -159,6 +160,6 @@ INSERT INTO LinkClicks (link_click_id, link_id, num_of_clicks) VALUES
 (3, 3, 10),
 (4, 4, 25),
 (5, 5, 18),
-(6, 6, 21), --Mock data for testing
+(6, 6, 21), 
 (7, 7, 10),
 (8, 8, 12);

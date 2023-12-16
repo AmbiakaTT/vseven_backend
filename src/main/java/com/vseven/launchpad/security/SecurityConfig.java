@@ -50,6 +50,7 @@ public class SecurityConfig {
         );
         return userDetailsManager;
     }
+    
 
 //    @Bean
 //    public JWTAuthenticationFilter jwtAuthenticationFilter() {
