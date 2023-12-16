@@ -4,16 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "LinkClicks")
 public class LinkClick {
 
     @Id
@@ -24,11 +22,8 @@ public class LinkClick {
     @JsonIgnore
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Getter
     @NotNull
-    @JoinColumns({
-            @JoinColumn(name = "link_id", referencedColumnName = "link_id"),
-    })
+    @JoinColumn(name = "link_id", referencedColumnName = "link_id")
     private Link link;
 
 
