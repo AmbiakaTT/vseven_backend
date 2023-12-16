@@ -3,7 +3,6 @@ package com.vseven.launchpad.controller;
 import com.vseven.launchpad.dto.request.QuickLinkDTO;
 import com.vseven.launchpad.dto.response.LinkResponse;
 import com.vseven.launchpad.entity.Link;
-import com.vseven.launchpad.entity.LinkClick;
 import com.vseven.launchpad.entity.User;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
 import com.vseven.launchpad.exception.response.ErrorDictionary;
@@ -20,15 +19,16 @@ import com.vseven.launchpad.entity.UserQuickLink;
 import java.util.*;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/api")
+@RequestMapping(value = "/api", produces = APPLICATION_JSON_VALUE)
 public class QuickLinkController {
 
     private final UserQuickLinkRepository userQuickLinkRepository;
@@ -160,28 +160,28 @@ public class QuickLinkController {
     }
 
 
-    @GetMapping("/top-clicked-links")
-    public ResponseEntity<?> getTopLinks() {
-
-        List<LinkClick> topLinks  = linkClickRepository.findTop5ByOrderByNumOfClicksDesc();
-
-        List<LinkResponse> topLinksContent = topLinks.stream()
-                .map(topLink -> {
-                    LinkResponse linkResponse = LinkResponse.builder()
-                            .linkId(topLink.getLink().getLinkId())
-                            .linkName(topLink.getLink().getLinkName())
-                            .url(topLink.getLink().getUrl())
-                            .build();
-
-                    return linkResponse;
-                })
-                .toList();
-
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("topLinks", topLinksContent);
-
-        return ResponseEntity.ok(responseMap);
-
-    }
+//    @GetMapping("/top-clicked-links")
+//    public ResponseEntity<?> getTopLinks() {
+//
+//        List<LinkClick> topLinks  = linkClickRepository.findTop5ByOrderByNumOfClicksDesc();
+//
+//        List<LinkResponse> topLinksContent = topLinks.stream()
+//                .map(topLink -> {
+//                    LinkResponse linkResponse = LinkResponse.builder()
+//                            .linkId(topLink.getLink().getLinkId())
+//                            .linkName(topLink.getLink().getLinkName())
+//                            .url(topLink.getLink().getUrl())
+//                            .build();
+//
+//                    return linkResponse;
+//                })
+//                .toList();
+//
+//        Map<String, Object> responseMap = new HashMap<>();
+//        responseMap.put("topLinks", topLinksContent);
+//
+//        return ResponseEntity.ok(responseMap);
+//
+//    }
 
 }
