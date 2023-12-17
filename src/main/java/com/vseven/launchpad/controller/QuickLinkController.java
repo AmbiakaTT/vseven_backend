@@ -4,12 +4,20 @@ import com.vseven.launchpad.dto.request.CombinedDTO;
 import com.vseven.launchpad.dto.request.LinkOrderDTO;
 import com.vseven.launchpad.dto.request.QuickLinkDTO;
 import com.vseven.launchpad.dto.request.SectionOrderDTO;
+import com.vseven.launchpad.dto.response.LinkResponse;
+import com.vseven.launchpad.dto.response.MessageResponse;
+import com.vseven.launchpad.entity.Link;
+import com.vseven.launchpad.entity.User;
+import com.vseven.launchpad.exception.ResourceNotFoundException;
+import com.vseven.launchpad.exception.response.ErrorDictionary;
+import com.vseven.launchpad.repository.LinkClickRepository;
+import com.vseven.launchpad.repository.LinkRepository;
+import com.vseven.launchpad.repository.UserQuickLinkRepository;
+import com.vseven.launchpad.repository.UserRepository;
 import com.vseven.launchpad.entity.*;
-import com.vseven.launchpad.entity.SectionOrder;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
 import com.vseven.launchpad.exception.response.ErrorDictionary;
 import com.vseven.launchpad.repository.*;
-import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -21,11 +29,13 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/api")
+@RequestMapping(value = "/api", produces = APPLICATION_JSON_VALUE)
 public class QuickLinkController {
 
     private final UserQuickLinkRepository userQuickLinkRepository;
@@ -60,14 +70,15 @@ public class QuickLinkController {
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("userName", username);
 
-        List<Map<String, Object>> quickLinksContent = quickLinksList.stream()
+        List<LinkResponse> quickLinksContent = quickLinksList.stream()
                 .map(quickLink -> {
-                    Map<String, Object> quickLinkMap = new HashMap<>();
-                    quickLinkMap.put("linkId", quickLink.getLink().getLinkId());
-                    quickLinkMap.put("linkName", quickLink.getLink().getLinkName());
-                    quickLinkMap.put("url", quickLink.getLink().getUrl());
-                    // Add more properties as needed
-                    return quickLinkMap;
+                    LinkResponse linkResponse = LinkResponse.builder()
+                            .linkId(quickLink.getLink().getLinkId())
+                            .linkName(quickLink.getLink().getLinkName())
+                            .url(quickLink.getLink().getUrl())
+                            .build();
+
+                    return linkResponse;
                 })
                 .toList();
 
@@ -104,18 +115,17 @@ public class QuickLinkController {
 
 
     @PostMapping("/{username}/save")
-    public ResponseEntity<?> saveUserQuickLinks(@PathVariable String username, @RequestBody  CombinedDTO combinedDTO) {
-
+    public ResponseEntity<?> saveUserQuickLinks(@PathVariable String username, @RequestBody CombinedDTO combinedDTO) {
 
         User user = userRepository.findByUserName(username);
         if (user == null) {
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
 
-        QuickLinkDTO quicklinksDTO =  combinedDTO.getQuickLinkDTO();
+        QuickLinkDTO quickLinkDTO = combinedDTO.getQuickLinkDTO();
 
-        if (quicklinksDTO != null) {
-            List<Integer> linkIds = quicklinksDTO.getLinksId();
+        if (quickLinkDTO != null) {
+            List<Integer> linkIds = quickLinkDTO.getLinksId();
 
             for (Integer linkId : linkIds) {
                 Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(linkId));
@@ -139,8 +149,6 @@ public class QuickLinkController {
                 }
             }
         }
-        Map<String, Object> responseMap = new HashMap<>();
-
 
         List<SectionOrderDTO> sectionOrderDTOList =  combinedDTO.getSectionOrderDTOList();
         if (sectionOrderDTOList != null) {
@@ -163,7 +171,7 @@ public class QuickLinkController {
 
         if (linkOrderDTOList != null) {
             // Debugging purposes
-           // System.out.println("Hello I am not null");
+            // System.out.println("Hello I am not null");
             for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
                 Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(linkOrderDTO.getLinkId()));
                 if (linkOptional.isPresent()) {
@@ -175,9 +183,12 @@ public class QuickLinkController {
 
             }
         }
-        responseMap.put("message", "Successfully Saved");
 
-        return ResponseEntity.ok(responseMap);
+        MessageResponse response = MessageResponse.builder()
+                .message("Successfully Saved")
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{username}/unbookmark")
@@ -202,10 +213,11 @@ public class QuickLinkController {
                 }
             }
         }
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("message", "Successfully Unbookmark");
+        MessageResponse response = MessageResponse.builder()
+                .message("Successfully Unbookmark")
+                .build();
 
-        return ResponseEntity.ok(responseMap);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{username}/reset")
@@ -222,11 +234,12 @@ public class QuickLinkController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred during reset");
 
         }
+        MessageResponse response = MessageResponse.builder()
+                .message("Successfully Reset")
+                .build();
 
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("message", "Successfully Reset");
 
-        return ResponseEntity.ok(responseMap);
+        return ResponseEntity.ok(response);
     }
 
 
