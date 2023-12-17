@@ -72,7 +72,7 @@ public class LinkTrackingController {
             }
         }
         MessageResponse response = MessageResponse.builder()
-                .message("Link Tracking successful")
+                .message("Link Tracking Successfully Updated")
                 .build();
 
         return  ResponseEntity.ok(response);
