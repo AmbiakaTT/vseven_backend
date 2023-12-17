@@ -165,7 +165,7 @@ INSERT INTO LinkClicks (link_click_id, link_id, num_of_clicks) VALUES
 (8, 8, 12);
 
 CREATE TABLE SectionOrder (
-  section_order_id INT PRIMARY KEY,
+  section_order_id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT,
   section_id INT,
   section_order INT,
@@ -194,7 +194,7 @@ VALUES
 
 
  CREATE TABLE LinkOrder (
-       link_order_id INT PRIMARY KEY,
+       link_order_id INT PRIMARY KEY AUTO_INCREMENT,
        user_id INT,
        link_id INT,
        link_order INT,
