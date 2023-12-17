@@ -164,28 +164,4 @@ public class QuickLinkController {
     }
 
 
-//    @GetMapping("/top-clicked-links")
-//    public ResponseEntity<?> getTopLinks() {
-//
-//        List<LinkClick> topLinks  = linkClickRepository.findTop5ByOrderByNumOfClicksDesc();
-//
-//        List<LinkResponse> topLinksContent = topLinks.stream()
-//                .map(topLink -> {
-//                    LinkResponse linkResponse = LinkResponse.builder()
-//                            .linkId(topLink.getLink().getLinkId())
-//                            .linkName(topLink.getLink().getLinkName())
-//                            .url(topLink.getLink().getUrl())
-//                            .build();
-//
-//                    return linkResponse;
-//                })
-//                .toList();
-//
-//        Map<String, Object> responseMap = new HashMap<>();
-//        responseMap.put("topLinks", topLinksContent);
-//
-//        return ResponseEntity.ok(responseMap);
-//
-//    }
-
 }
