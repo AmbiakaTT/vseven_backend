@@ -31,9 +31,5 @@ public class LinkClick {
     @Column(name="num_of_clicks")
     private Integer numOfClicks;
 
-    public LinkClick (Integer theLinkId , Integer theNumOfCLicks ) {
-        linkClickId = theLinkId;
-        numOfClicks = theNumOfCLicks;
-    }
 
 }
