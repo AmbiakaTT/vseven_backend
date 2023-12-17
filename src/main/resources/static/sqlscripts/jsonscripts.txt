@@ -1,0 +1,18 @@
+
+api/user1/save
+
+{
+  "quickLinkDTO": {
+    "linksId": [1, 2, 3, 4, 5]
+  },
+  "linkOrderDTOList": [
+    {"userId": 1, "linkId": 1, "sectionId": 1, "linkOrder": 3},
+    {"userId": 1, "linkId": 2, "sectionId": 1, "linkOrder": 1},
+    {"userId": 1, "linkId": 3, "sectionId": 1, "linkOrder": 2}
+  ],
+  "sectionOrderDTOList": [
+    {"userId": 1, "sectionId": 1, "order": 1},
+    {"userId": 1, "sectionId": 2, "order": 2},
+    {"userId": 1, "sectionId": 2, "order": 2}
+  ]
+}
