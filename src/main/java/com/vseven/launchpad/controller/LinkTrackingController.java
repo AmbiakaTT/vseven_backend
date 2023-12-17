@@ -2,6 +2,7 @@ package com.vseven.launchpad.controller;
 
 import com.vseven.launchpad.dto.request.LinkTrackingDTO;
 import com.vseven.launchpad.dto.response.LinkResponse;
+import com.vseven.launchpad.dto.response.MessageResponse;
 import com.vseven.launchpad.entity.Link;
 import com.vseven.launchpad.entity.LinkClick;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
@@ -70,7 +71,11 @@ public class LinkTrackingController {
                 }
             }
         }
-        return  ResponseEntity.ok("Link Tracking success");
+        MessageResponse response = MessageResponse.builder()
+                .message("Link Tracking successful")
+                .build();
+
+        return  ResponseEntity.ok(response);
 
     }
 

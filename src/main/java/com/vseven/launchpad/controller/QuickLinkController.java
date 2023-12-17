@@ -2,6 +2,7 @@ package com.vseven.launchpad.controller;
 
 import com.vseven.launchpad.dto.request.QuickLinkDTO;
 import com.vseven.launchpad.dto.response.LinkResponse;
+import com.vseven.launchpad.dto.response.MessageResponse;
 import com.vseven.launchpad.entity.Link;
 import com.vseven.launchpad.entity.User;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
@@ -104,10 +105,11 @@ public class QuickLinkController {
                 }
             }
         }
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("message", "Successfully Saved");
+        MessageResponse response = MessageResponse.builder()
+                .message("Successfully Saved")
+                .build();
 
-        return ResponseEntity.ok(responseMap);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{username}/unbookmark")
@@ -132,10 +134,11 @@ public class QuickLinkController {
                 }
             }
         }
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("message", "Successfully Unbookmark");
+        MessageResponse response = MessageResponse.builder()
+                .message("Successfully Unbookmark")
+                .build();
 
-        return ResponseEntity.ok(responseMap);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{username}/reset")
@@ -152,11 +155,12 @@ public class QuickLinkController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred during reset");
 
         }
+        MessageResponse response = MessageResponse.builder()
+                .message("Successfully Reset")
+                .build();
 
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("message", "Successfully Reset");
 
-        return ResponseEntity.ok(responseMap);
+        return ResponseEntity.ok(response);
     }
 
 
