@@ -1,10 +1,13 @@
 package com.vseven.launchpad.controller;
 
 import com.vseven.launchpad.dto.request.QuickLinkDTO;
+import com.vseven.launchpad.dto.response.LinkResponse;
+import com.vseven.launchpad.dto.response.MessageResponse;
 import com.vseven.launchpad.entity.Link;
 import com.vseven.launchpad.entity.User;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
 import com.vseven.launchpad.exception.response.ErrorDictionary;
+import com.vseven.launchpad.repository.LinkClickRepository;
 import com.vseven.launchpad.repository.LinkRepository;
 import com.vseven.launchpad.repository.UserQuickLinkRepository;
 import com.vseven.launchpad.repository.UserRepository;
@@ -20,11 +23,13 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/api")
+@RequestMapping(value = "/api", produces = APPLICATION_JSON_VALUE)
 public class QuickLinkController {
 
     private final UserQuickLinkRepository userQuickLinkRepository;
@@ -33,7 +38,9 @@ public class QuickLinkController {
 
     private final LinkRepository linkRepository;
 
+    private final LinkClickRepository linkClickRepository;
 
+    
     @GetMapping("/{username}/get")
     public ResponseEntity<?> getQuickLinks(@PathVariable String username) {
         User user = userRepository.findByUserName(username);
@@ -50,14 +57,15 @@ public class QuickLinkController {
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("userName", username);
 
-        List<Map<String, Object>> quickLinksContent = quickLinksList.stream()
+        List<LinkResponse> quickLinksContent = quickLinksList.stream()
                 .map(quickLink -> {
-                    Map<String, Object> quickLinkMap = new HashMap<>();
-                    quickLinkMap.put("linkId", quickLink.getLink().getLinkId());
-                    quickLinkMap.put("linkName", quickLink.getLink().getLinkName());
-                    quickLinkMap.put("url", quickLink.getLink().getUrl());
-                    // Add more properties as needed
-                    return quickLinkMap;
+                    LinkResponse linkResponse = LinkResponse.builder()
+                            .linkId(quickLink.getLink().getLinkId())
+                            .linkName(quickLink.getLink().getLinkName())
+                            .url(quickLink.getLink().getUrl())
+                            .build();
+
+                    return linkResponse;
                 })
                 .toList();
 
@@ -97,10 +105,11 @@ public class QuickLinkController {
                 }
             }
         }
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("message", "Successfully Saved");
+        MessageResponse response = MessageResponse.builder()
+                .message("Successfully Saved")
+                .build();
 
-        return ResponseEntity.ok(responseMap);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{username}/unbookmark")
@@ -125,10 +134,11 @@ public class QuickLinkController {
                 }
             }
         }
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("message", "Successfully Unbookmark");
+        MessageResponse response = MessageResponse.builder()
+                .message("Successfully Unbookmark")
+                .build();
 
-        return ResponseEntity.ok(responseMap);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{username}/reset")
@@ -145,11 +155,12 @@ public class QuickLinkController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred during reset");
 
         }
+        MessageResponse response = MessageResponse.builder()
+                .message("Successfully Reset")
+                .build();
 
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("message", "Successfully Reset");
 
-        return ResponseEntity.ok(responseMap);
+        return ResponseEntity.ok(response);
     }
 
 
