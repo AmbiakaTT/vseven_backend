@@ -65,10 +65,6 @@ public class QuickLinkController {
 
         List<LinkOrder> linkOrderList = linkOrderRepository.findByUserUserName(username);
 
-        if (quickLinksList == null || quickLinksList.isEmpty()) {
-            throw new ResourceNotFoundException(ErrorDictionary.NF_001);
-        }
-
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("userName", username);
 
@@ -110,10 +106,17 @@ public class QuickLinkController {
                 })
                 .toList();
 
+        if (quickLinksList.isEmpty()) {
+            //throw new ResourceNotFoundException(ErrorDictionary.NF_001);
+            responseMap.put("userQuickLinks", null);
+            responseMap.put("sectionOrder", sectionOrderContent);
+            responseMap.put("linkOrder", linkOrderContent);
+
+            return ResponseEntity.ok(responseMap);
+        }
         responseMap.put("userQuickLinks", quickLinksContent);
         responseMap.put("sectionOrder", sectionOrderContent);
         responseMap.put("linkOrder", linkOrderContent);
-
 
         return ResponseEntity.ok(responseMap);
     }
@@ -126,7 +129,7 @@ public class QuickLinkController {
         if (user == null) {
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
-
+        // Used for userQuickLink
         QuickLinkDTO quickLinkDTO = combinedDTO.getQuickLinkDTO();
 
         if (quickLinkDTO != null) {
@@ -154,7 +157,7 @@ public class QuickLinkController {
                 }
             }
         }
-
+        // Use for saving sectionOrder
         List<SectionOrderDTO> sectionOrderDTOList =  combinedDTO.getSectionOrderDTOList();
         if (sectionOrderDTOList != null) {
             System.out.println("Section order not null");
@@ -172,6 +175,7 @@ public class QuickLinkController {
             System.out.println("Section order null");
         }
 
+        // Use for saving linkOrder
         List<LinkOrderDTO> linkOrderDTOList =  combinedDTO.getLinkOrderDTOList();
 
         if (linkOrderDTOList != null) {
