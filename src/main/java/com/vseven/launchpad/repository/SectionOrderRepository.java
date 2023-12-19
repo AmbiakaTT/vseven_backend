@@ -23,5 +23,5 @@ public interface SectionOrderRepository extends JpaRepository<SectionOrder, Inte
     @Query(value = "INSERT INTO SectionOrder (user_id, section_id, section_order) VALUES (:userId, :sectionId, :sectionOrder) " +
             "ON DUPLICATE KEY UPDATE section_order = VALUES(section_order)", nativeQuery = true)
     void saveSectionOrderNativeQuery(Integer userId, Integer sectionId, Integer sectionOrder);
-
+    
 }

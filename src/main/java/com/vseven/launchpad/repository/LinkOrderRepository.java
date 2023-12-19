@@ -18,7 +18,7 @@ public interface LinkOrderRepository extends JpaRepository<LinkOrder, Integer> {
     @Transactional
     @Modifying
     @Query(value = "INSERT INTO LinkOrder (user_id, section_id, link_order, link_id) VALUES (:userId, :sectionId, :linkOrder, :linkId) " +
-            "ON DUPLICATE KEY UPDATE link_id = VALUES(link_id)", nativeQuery = true)
+            "ON DUPLICATE KEY UPDATE link_order = VALUES(link_order)", nativeQuery = true)
     void saveLinkOrderNativeQuery(Integer userId, Integer sectionId, Integer linkOrder, Integer linkId);
 
 }

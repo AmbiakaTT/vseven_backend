@@ -4,10 +4,8 @@ import com.vseven.launchpad.dto.request.CombinedDTO;
 import com.vseven.launchpad.dto.request.LinkOrderDTO;
 import com.vseven.launchpad.dto.request.QuickLinkDTO;
 import com.vseven.launchpad.dto.request.SectionOrderDTO;
-import com.vseven.launchpad.dto.response.LinkOrderResponse;
 import com.vseven.launchpad.dto.response.LinkResponse;
 import com.vseven.launchpad.dto.response.MessageResponse;
-import com.vseven.launchpad.dto.response.SectionOrderResponse;
 import com.vseven.launchpad.entity.Link;
 import com.vseven.launchpad.entity.User;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
@@ -65,6 +63,10 @@ public class QuickLinkController {
 
         List<LinkOrder> linkOrderList = linkOrderRepository.findByUserUserName(username);
 
+        if (quickLinksList == null || quickLinksList.isEmpty()) {
+            throw new ResourceNotFoundException(ErrorDictionary.NF_001);
+        }
+
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("userName", username);
 
@@ -80,43 +82,34 @@ public class QuickLinkController {
                 })
                 .toList();
 
-        List<SectionOrderResponse> sectionOrderContent = sectionOrdersList.stream()
+        List<Map<String, Object>> sectionOrderContent = sectionOrdersList.stream()
                 .map(sectionOrder -> {
-                    SectionOrderResponse sectionOrderResponse = SectionOrderResponse.builder()
-                            .sectionId(sectionOrder.getSection().getSectionId())
-                            .sectionName(sectionOrder.getSection().getSectionName())
-                            .sectionOrder(sectionOrder.getSectionOrder())
-                            .build();
-
-                    return sectionOrderResponse;
+                    Map<String, Object> sectionOrderMap = new HashMap<>();
+                    sectionOrderMap.put("sectionId", sectionOrder.getSection().getSectionId());
+                    sectionOrderMap.put("sectionName", sectionOrder.getSection().getSectionName());
+                    sectionOrderMap.put("order", sectionOrder.getSectionOrder());
+                    // Add more properties as needed
+                    return sectionOrderMap;
                 })
                 .toList();
 
 
-        List<LinkOrderResponse> linkOrderContent = linkOrderList.stream()
+        List<Map<String, Object>> linkOrderContent = linkOrderList.stream()
                 .map(linkOrder -> {
-                    LinkOrderResponse linkOrderResponse = LinkOrderResponse.builder()
-                            .sectionId(linkOrder.getSection().getSectionId())
-                            .linkId(linkOrder.getLink().getLinkId())
-                            .linkName(linkOrder.getLink().getLinkName())
-                            .linkOrder(linkOrder.getLinkOrder())
-                            .build();
-
-                    return linkOrderResponse;
+                    Map<String, Object> linkOrderMap = new HashMap<>();
+                    linkOrderMap.put("sectionId", linkOrder.getSection().getSectionId());
+                    linkOrderMap.put("sectionName", linkOrder.getSection().getSectionName());
+                    linkOrderMap.put("linkId", linkOrder.getLink().getLinkId());
+                    linkOrderMap.put("order", linkOrder.getLinkOrder());
+                    // Add more properties as needed
+                    return linkOrderMap;
                 })
                 .toList();
 
-        if (quickLinksList.isEmpty()) {
-            //throw new ResourceNotFoundException(ErrorDictionary.NF_001);
-            responseMap.put("userQuickLinks", null);
-            responseMap.put("sectionOrder", sectionOrderContent);
-            responseMap.put("linkOrder", linkOrderContent);
-
-            return ResponseEntity.ok(responseMap);
-        }
         responseMap.put("userQuickLinks", quickLinksContent);
         responseMap.put("sectionOrder", sectionOrderContent);
         responseMap.put("linkOrder", linkOrderContent);
+
 
         return ResponseEntity.ok(responseMap);
     }
@@ -126,10 +119,11 @@ public class QuickLinkController {
     public ResponseEntity<?> saveUserQuickLinks(@PathVariable String username, @RequestBody CombinedDTO combinedDTO) {
 
         User user = userRepository.findByUserName(username);
+        Integer userId  = user.getUserId();
         if (user == null) {
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
-        // Used for userQuickLink
+
         QuickLinkDTO quickLinkDTO = combinedDTO.getQuickLinkDTO();
 
         if (quickLinkDTO != null) {
@@ -138,6 +132,7 @@ public class QuickLinkController {
             for (Integer linkId : linkIds) {
                 Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(linkId));
                 Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, linkId);
+
 
                 if (linkOptional.isPresent() && !quickLinkOptional.isPresent()) {
                     Link link = linkOptional.get();
@@ -157,12 +152,15 @@ public class QuickLinkController {
                 }
             }
         }
-        // Use for saving sectionOrder
+
         List<SectionOrderDTO> sectionOrderDTOList =  combinedDTO.getSectionOrderDTOList();
         if (sectionOrderDTOList != null) {
-            System.out.println("Section order not null");
+            //System.out.println("Section order not null");
             for (SectionOrderDTO sectionOrder : sectionOrderDTOList) {
                 Optional<Section> sectionOptional = sectionRepository.findById(sectionOrder.getSectionId());
+                if (!Objects.equals(sectionOrder.getUserId(), userId)) {
+                    throw new ResourceNotFoundException(ErrorDictionary.NF_007);
+                }
                 if (sectionOptional.isPresent()) {
                     sectionOrderRepository.saveSectionOrderNativeQuery(sectionOrder.getUserId(), sectionOrder.getSectionId(), sectionOrder.getOrder());
 
@@ -175,17 +173,25 @@ public class QuickLinkController {
             System.out.println("Section order null");
         }
 
-        // Use for saving linkOrder
         List<LinkOrderDTO> linkOrderDTOList =  combinedDTO.getLinkOrderDTOList();
 
         if (linkOrderDTOList != null) {
             // Debugging purposes
-            // System.out.println("Hello I am not null");
             for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
-                Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(linkOrderDTO.getLinkId()));
-                if (linkOptional.isPresent()) {
-                    linkOrderRepository.saveLinkOrderNativeQuery(linkOrderDTO.getUserId(), linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder(), linkOrderDTO.getLinkId());
+                Optional<Link> linkOptional = linkRepository.findByLinkId(linkOrderDTO.getLinkId());
+                Link linkObject = linkOptional.orElse(null);
 
+                if (linkOptional.isPresent()) {
+                    if (!Objects.equals(linkOrderDTO.getUserId(), userId)) {
+                        throw new ResourceNotFoundException(ErrorDictionary.NF_007);
+                    }
+                    if (!Objects.equals(linkOrderDTO.getSectionId(), linkObject.getSectionId())) {
+
+                        throw new ResourceNotFoundException(ErrorDictionary.NF_008);
+                    }
+                    else {
+                        linkOrderRepository.saveLinkOrderNativeQuery(linkOrderDTO.getUserId(), linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder(), linkOrderDTO.getLinkId());
+                    }
                 } else {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_005);
                 }
