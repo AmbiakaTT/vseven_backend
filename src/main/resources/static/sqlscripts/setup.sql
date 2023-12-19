@@ -170,7 +170,9 @@ CREATE TABLE SectionOrder (
   section_id INT,
   section_order INT,
   FOREIGN KEY (user_id) REFERENCES User(user_id),
-  FOREIGN KEY (section_id) REFERENCES Section(section_id)
+  FOREIGN KEY (section_id) REFERENCES Section(section_id),
+  UNIQUE KEY unique_user_section (user_id, section_id),
+  UNIQUE KEY unique_user_order (user_id, section_order)
 );
 
 
@@ -185,12 +187,7 @@ VALUES
   (7, 2, 3, 3),
   (8, 3, 2, 1),
   (9, 4, 1, 2),
-  (10, 5, 3, 4),
-  (11, 1, 1, 5),
-  (12, 2, 2, 2),
-  (13, 3, 1, 1),
-  (14, 4, 3, 3),
-  (15, 5, 2, 1);
+  (10, 5, 3, 4);
 
 
  CREATE TABLE LinkOrder (
@@ -201,7 +198,11 @@ VALUES
        section_id INT,
        FOREIGN KEY (user_id) REFERENCES User(user_id),
        FOREIGN KEY (section_id) REFERENCES Section(section_id),
-       FOREIGN KEY (link_id) REFERENCES Link(link_id)
+       FOREIGN KEY (link_id) REFERENCES Link(link_id),
+       UNIQUE KEY unique_user_section (user_id, link_id),
+       UNIQUE KEY unique_user_section_link (user_id, section_id, link_order)
+
+
    );
 
 
@@ -209,4 +210,3 @@ VALUES
    (1, 1, 1, 1, 2),
    (2, 1, 2, 1, 3),
    (3, 1, 3, 1, 1);
-
