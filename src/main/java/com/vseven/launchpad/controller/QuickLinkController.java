@@ -4,8 +4,10 @@ import com.vseven.launchpad.dto.request.CombinedDTO;
 import com.vseven.launchpad.dto.request.LinkOrderDTO;
 import com.vseven.launchpad.dto.request.QuickLinkDTO;
 import com.vseven.launchpad.dto.request.SectionOrderDTO;
+import com.vseven.launchpad.dto.response.LinkOrderResponse;
 import com.vseven.launchpad.dto.response.LinkResponse;
 import com.vseven.launchpad.dto.response.MessageResponse;
+import com.vseven.launchpad.dto.response.SectionOrderResponse;
 import com.vseven.launchpad.entity.Link;
 import com.vseven.launchpad.entity.User;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
@@ -63,9 +65,6 @@ public class QuickLinkController {
 
         List<LinkOrder> linkOrderList = linkOrderRepository.findByUserUserName(username);
 
-        if (quickLinksList == null || quickLinksList.isEmpty()) {
-            throw new ResourceNotFoundException(ErrorDictionary.NF_001);
-        }
 
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("userName", username);
@@ -82,29 +81,39 @@ public class QuickLinkController {
                 })
                 .toList();
 
-        List<Map<String, Object>> sectionOrderContent = sectionOrdersList.stream()
+        List<SectionOrderResponse> sectionOrderContent = sectionOrdersList.stream()
                 .map(sectionOrder -> {
-                    Map<String, Object> sectionOrderMap = new HashMap<>();
-                    sectionOrderMap.put("sectionId", sectionOrder.getSection().getSectionId());
-                    sectionOrderMap.put("sectionName", sectionOrder.getSection().getSectionName());
-                    sectionOrderMap.put("order", sectionOrder.getSectionOrder());
-                    // Add more properties as needed
-                    return sectionOrderMap;
+                    SectionOrderResponse sectionOrderResponse = SectionOrderResponse.builder()
+                            .sectionId(sectionOrder.getSection().getSectionId())
+                            .sectionName(sectionOrder.getSection().getSectionName())
+                            .sectionOrder(sectionOrder.getSectionOrder())
+                            .build();
+
+                    return sectionOrderResponse;
                 })
                 .toList();
 
 
-        List<Map<String, Object>> linkOrderContent = linkOrderList.stream()
+        List<LinkOrderResponse> linkOrderContent = linkOrderList.stream()
                 .map(linkOrder -> {
-                    Map<String, Object> linkOrderMap = new HashMap<>();
-                    linkOrderMap.put("sectionId", linkOrder.getSection().getSectionId());
-                    linkOrderMap.put("sectionName", linkOrder.getSection().getSectionName());
-                    linkOrderMap.put("linkId", linkOrder.getLink().getLinkId());
-                    linkOrderMap.put("order", linkOrder.getLinkOrder());
-                    // Add more properties as needed
-                    return linkOrderMap;
+                    LinkOrderResponse linkOrderResponse = LinkOrderResponse.builder()
+                            .sectionId(linkOrder.getSection().getSectionId())
+                            .linkId(linkOrder.getLink().getLinkId())
+                            .linkName(linkOrder.getLink().getLinkName())
+                            .linkOrder(linkOrder.getLinkOrder())
+                            .build();
+
+                    return linkOrderResponse;
                 })
                 .toList();
+
+        if (quickLinksList.isEmpty()) {
+            responseMap.put("userQuickLinks", null);
+            responseMap.put("sectionOrder", sectionOrderContent);
+            responseMap.put("linkOrder", linkOrderContent);
+
+            return ResponseEntity.ok(responseMap);
+        }
 
         responseMap.put("userQuickLinks", quickLinksContent);
         responseMap.put("sectionOrder", sectionOrderContent);
@@ -124,6 +133,7 @@ public class QuickLinkController {
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
 
+        //Used for QuickLink
         QuickLinkDTO quickLinkDTO = combinedDTO.getQuickLinkDTO();
 
         if (quickLinkDTO != null) {
@@ -153,6 +163,7 @@ public class QuickLinkController {
             }
         }
 
+        //Used for sectionOrder
         List<SectionOrderDTO> sectionOrderDTOList =  combinedDTO.getSectionOrderDTOList();
         if (sectionOrderDTOList != null) {
             //System.out.println("Section order not null");
@@ -173,6 +184,7 @@ public class QuickLinkController {
             System.out.println("Section order null");
         }
 
+        //Used for linkOrder
         List<LinkOrderDTO> linkOrderDTOList =  combinedDTO.getLinkOrderDTOList();
 
         if (linkOrderDTOList != null) {
