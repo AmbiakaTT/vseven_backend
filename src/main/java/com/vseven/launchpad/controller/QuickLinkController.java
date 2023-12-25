@@ -175,7 +175,7 @@ public class QuickLinkController {
 
             List<Integer> dtoIds = new ArrayList<>();
             for (SectionOrderDTO sectionOrder : sectionOrderDTOList) {
-                dtoIds.add(sectionOrder.getSectionId());
+                dtoIds.add(sectionOrder.getOrder());
             }
 
             if (sectionLength != sectionDtoLength || hasDuplicateElements(dtoIds) ) {
@@ -213,7 +213,7 @@ public class QuickLinkController {
 
             List<Integer> dtoLinkIds = new ArrayList<>();
             for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
-                dtoLinkIds.add(linkOrderDTO.getLinkId());
+                dtoLinkIds.add(linkOrderDTO.getLinkOrder());
             }
 
             if (sectionDtoLength != linkLength && hasDuplicateElements(dtoLinkIds)) {
