@@ -236,7 +236,7 @@ public class QuickLinkController {
 
                         throw new ResourceNotFoundException(ErrorDictionary.NF_008);
                     }
-                    linkOrderRepository.updateLinkOrderNativeQuery(linkOrderDTO.getUserId(), linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder(), linkOrderDTO.getLinkId());
+                    linkOrderRepository.saveLinkOrderNativeQuery(linkOrderDTO.getUserId(), linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder(), linkOrderDTO.getLinkId());
 
                 } else {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_005);
