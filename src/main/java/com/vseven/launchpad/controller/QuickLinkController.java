@@ -136,10 +136,8 @@ public class QuickLinkController {
 
         //Used for QuickLink
         QuickLinkDTO quickLinkDTO = combinedDTO.getQuickLinkDTO();
-
-        if (quickLinkDTO != null) {
+        if (quickLinkDTO != null  ) {
             List<Integer> linkIds = quickLinkDTO.getLinksId();
-
             for (Integer linkId : linkIds) {
                 Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(linkId));
                 Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, linkId);
@@ -166,13 +164,25 @@ public class QuickLinkController {
 
         //Used for sectionOrder
         List<SectionOrderDTO> sectionOrderDTOList =  combinedDTO.getSectionOrderDTOList();
-        if (sectionOrderDTOList != null) {
-            //System.out.println("Section order not null");
+
+        if (sectionOrderDTOList != null ) {
+
+            Integer sectionDtoLength = sectionOrderDTOList.size();
+            long sectionLength = sectionRepository.count();
+
+            List<Integer> dtoIds = new ArrayList<>();
+            for (SectionOrderDTO sectionOrder : sectionOrderDTOList) {
+                dtoIds.add(sectionOrder.getSectionId());
+            }
+
+            if (sectionLength != sectionDtoLength || hasDuplicateElements(dtoIds) ) {
+                throw new ResourceNotFoundException(ErrorDictionary.BR_001);
+            }
+
             for (SectionOrderDTO sectionOrder : sectionOrderDTOList) {
                 Optional<Section> sectionOptional = sectionRepository.findById(sectionOrder.getSectionId());
                 if (!Objects.equals(sectionOrder.getUserId(), userId)) {
                     throw new BadRequestException(ErrorDictionary.BR_001);
-                    //throw new ResourceNotFoundException(ErrorDictionary.BR_001);
                 }
                 if (sectionOptional.isPresent()) {
                     sectionOrderRepository.saveSectionOrderNativeQuery(sectionOrder.getUserId(), sectionOrder.getSectionId(), sectionOrder.getOrder());
@@ -181,19 +191,33 @@ public class QuickLinkController {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_006);
                 }
             }
-        } else {
-            // Debugging purposes
-            System.out.println("Section order null");
         }
+//        } else {
+//            // Debugging purposes
+//            System.out.println("Section order null");
+//        }
 
         //Used for linkOrder
         List<LinkOrderDTO> linkOrderDTOList =  combinedDTO.getLinkOrderDTOList();
 
         if (linkOrderDTOList != null) {
-            // Debugging purposes
+
+
+            List<Integer> dtoLinkIds = new ArrayList<>();
+            for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
+                dtoLinkIds.add(linkOrderDTO.getLinkId());
+            }
+
+            if (hasDuplicateElements(dtoLinkIds)) {
+                throw new ResourceNotFoundException(ErrorDictionary.BR_001);
+            }
+            
+
             for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
                 Optional<Link> linkOptional = linkRepository.findByLinkId(linkOrderDTO.getLinkId());
                 Link linkObject = linkOptional.orElse(null);
+
+
 
                 if (linkOptional.isPresent()) {
                     if (!Objects.equals(linkOrderDTO.getUserId(), userId)) {
@@ -204,9 +228,8 @@ public class QuickLinkController {
 
                         throw new ResourceNotFoundException(ErrorDictionary.NF_008);
                     }
-                    else {
-                        linkOrderRepository.saveLinkOrderNativeQuery(linkOrderDTO.getUserId(), linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder(), linkOrderDTO.getLinkId());
-                    }
+                    linkOrderRepository.updateLinkOrderNativeQuery(linkOrderDTO.getUserId(), linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder(), linkOrderDTO.getLinkId());
+
                 } else {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_005);
                 }
@@ -270,6 +293,21 @@ public class QuickLinkController {
 
 
         return ResponseEntity.ok(response);
+    }
+
+
+    private boolean hasDuplicateElements(List<Integer> theList) {
+        Set<Integer> seenSet = new HashSet<>();
+
+        for (Integer number : theList) {
+            // If the number is already in the set, it's a duplicate
+            if (!seenSet.add(number)) {
+                return true; // Duplicate found
+            }
+        }
+
+        // No duplicates found
+        return false;
     }
 
 
