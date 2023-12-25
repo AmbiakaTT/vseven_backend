@@ -204,16 +204,27 @@ public class QuickLinkController {
         if (linkOrderDTOList != null) {
 
             Integer linkDtoLength = linkOrderDTOList.size();
-            long linkLength = linkRepository.count();
+//            long linkLength = linkRepository.count();
+
+            Set<Integer> sectionSet = new HashSet<>();
+
 
 
             List<Duo> sectionAndLinkPairList = new ArrayList<>();
 
             for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
-                sectionAndLinkPairList.add(new Duo(linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder()));
+                Integer section = linkOrderDTO.getSectionId();
+                sectionAndLinkPairList.add(new Duo(section, linkOrderDTO.getLinkOrder()));
+                sectionSet.add(section);
             }
 
-            if ( linkDtoLength != linkLength || hasDuplicateLinkIdsAndOrder(sectionAndLinkPairList)) {
+            List<Integer> arr = new ArrayList<>(sectionSet);
+            Integer totalLinks = linkRepository.countLinksBySectionIds(arr);
+//            System.out.println(arr);
+//            System.out.println(totalLinks);
+//            System.out.println(linkDtoLength);
+
+            if ( totalLinks != linkDtoLength || hasDuplicateLinkIdsAndOrder(sectionAndLinkPairList)) {
                 throw new ResourceNotFoundException(ErrorDictionary.BR_001);
             }
             
