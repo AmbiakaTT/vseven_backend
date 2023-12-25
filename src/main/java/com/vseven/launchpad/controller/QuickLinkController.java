@@ -213,7 +213,7 @@ public class QuickLinkController {
                 sectionAndLinkPairList.add(new Duo(linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder()));
             }
 
-            if (sectionDtoLength != linkLength || hasDuplicateLinkIdsandOrder(sectionAndLinkPairList)) {
+            if ( hasDuplicateLinkIdsAndOrder(sectionAndLinkPairList)) {
                 throw new ResourceNotFoundException(ErrorDictionary.BR_001);
             }
             
@@ -315,7 +315,7 @@ public class QuickLinkController {
         return false;
     }
 
-    private boolean hasDuplicateLinkIdsandOrder(List<Duo> theList) {
+    private boolean hasDuplicateLinkIdsAndOrder(List<Duo> theList) {
         Set<Duo> seenSet = new HashSet<>();
 
         for (Duo duo : theList) {
