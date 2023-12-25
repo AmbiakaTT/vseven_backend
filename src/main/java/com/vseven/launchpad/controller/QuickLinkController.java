@@ -4,10 +4,7 @@ import com.vseven.launchpad.dto.request.CombinedDTO;
 import com.vseven.launchpad.dto.request.LinkOrderDTO;
 import com.vseven.launchpad.dto.request.QuickLinkDTO;
 import com.vseven.launchpad.dto.request.SectionOrderDTO;
-import com.vseven.launchpad.dto.response.LinkOrderResponse;
-import com.vseven.launchpad.dto.response.LinkResponse;
-import com.vseven.launchpad.dto.response.MessageResponse;
-import com.vseven.launchpad.dto.response.SectionOrderResponse;
+import com.vseven.launchpad.dto.response.*;
 import com.vseven.launchpad.entity.Link;
 import com.vseven.launchpad.entity.User;
 import com.vseven.launchpad.exception.BadRequestException;
@@ -54,7 +51,7 @@ public class QuickLinkController {
     private final SectionRepository sectionRepository;
 
     @GetMapping("/{username}/get")
-    public ResponseEntity<?> getQuickLinks(@PathVariable String username) {
+    public ResponseEntity<FullResponse> getQuickLinks(@PathVariable String username) {
         User user = userRepository.findByUserName(username);
         if (user == null) {
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
@@ -67,8 +64,8 @@ public class QuickLinkController {
         List<LinkOrder> linkOrderList = linkOrderRepository.findByUserUserName(username);
 
 
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("userName", username);
+//        Map<String, Object> responseMap = new HashMap<>();
+//        responseMap.put("userName", username);
 
         List<LinkResponse> quickLinksContent = quickLinksList.stream()
                 .map(quickLink -> {
@@ -109,19 +106,28 @@ public class QuickLinkController {
                 .toList();
 
         if (quickLinksList.isEmpty()) {
-            responseMap.put("userQuickLinks", null);
-            responseMap.put("sectionOrder", sectionOrderContent);
-            responseMap.put("linkOrder", linkOrderContent);
+            FullResponse fullResponse = FullResponse.builder()
+                    .userName(username)
+                    .quickLink(Collections.emptyList())
+                    .linkOrderResponse(linkOrderContent)
+                    .sectionOrderResponse(sectionOrderContent)
+                    .build();
 
-            return ResponseEntity.ok(responseMap);
+            return ResponseEntity.ok(fullResponse);
         }
 
-        responseMap.put("userQuickLinks", quickLinksContent);
-        responseMap.put("sectionOrder", sectionOrderContent);
-        responseMap.put("linkOrder", linkOrderContent);
+//        responseMap.put("userQuickLinks", quickLinksContent);
+//        responseMap.put("sectionOrder", sectionOrderContent);
+//        responseMap.put("linkOrder", linkOrderContent);
 
+        FullResponse fullResponse = FullResponse.builder()
+                .userName(username)
+                .quickLink(quickLinksContent)
+                .linkOrderResponse(linkOrderContent)
+                .sectionOrderResponse(sectionOrderContent)
+                .build();
 
-        return ResponseEntity.ok(responseMap);
+        return ResponseEntity.ok(fullResponse);
     }
 
 
