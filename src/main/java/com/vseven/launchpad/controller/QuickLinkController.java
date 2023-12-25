@@ -10,6 +10,7 @@ import com.vseven.launchpad.dto.response.MessageResponse;
 import com.vseven.launchpad.dto.response.SectionOrderResponse;
 import com.vseven.launchpad.entity.Link;
 import com.vseven.launchpad.entity.User;
+import com.vseven.launchpad.exception.BadRequestException;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
 import com.vseven.launchpad.exception.response.ErrorDictionary;
 import com.vseven.launchpad.repository.LinkClickRepository;
@@ -170,7 +171,8 @@ public class QuickLinkController {
             for (SectionOrderDTO sectionOrder : sectionOrderDTOList) {
                 Optional<Section> sectionOptional = sectionRepository.findById(sectionOrder.getSectionId());
                 if (!Objects.equals(sectionOrder.getUserId(), userId)) {
-                    throw new ResourceNotFoundException(ErrorDictionary.NF_007);
+                    throw new BadRequestException(ErrorDictionary.BR_001);
+                    //throw new ResourceNotFoundException(ErrorDictionary.BR_001);
                 }
                 if (sectionOptional.isPresent()) {
                     sectionOrderRepository.saveSectionOrderNativeQuery(sectionOrder.getUserId(), sectionOrder.getSectionId(), sectionOrder.getOrder());
@@ -195,7 +197,8 @@ public class QuickLinkController {
 
                 if (linkOptional.isPresent()) {
                     if (!Objects.equals(linkOrderDTO.getUserId(), userId)) {
-                        throw new ResourceNotFoundException(ErrorDictionary.NF_007);
+                        throw new BadRequestException(ErrorDictionary.BR_001);
+                        //throw new ResourceNotFoundException(ErrorDictionary.BR_001);
                     }
                     if (!Objects.equals(linkOrderDTO.getSectionId(), linkObject.getSectionId())) {
 
