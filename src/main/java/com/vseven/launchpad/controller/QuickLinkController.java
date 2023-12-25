@@ -203,7 +203,7 @@ public class QuickLinkController {
 
         if (linkOrderDTOList != null) {
 
-            Integer sectionDtoLength = linkOrderDTOList.size();
+            Integer linkDtoLength = linkOrderDTOList.size();
             long linkLength = linkRepository.count();
 
 
@@ -213,7 +213,7 @@ public class QuickLinkController {
                 sectionAndLinkPairList.add(new Duo(linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder()));
             }
 
-            if ( hasDuplicateLinkIdsAndOrder(sectionAndLinkPairList)) {
+            if ( linkDtoLength != linkLength || hasDuplicateLinkIdsAndOrder(sectionAndLinkPairList)) {
                 throw new ResourceNotFoundException(ErrorDictionary.BR_001);
             }
             
