@@ -7,6 +7,7 @@ import com.vseven.launchpad.dto.request.SectionOrderDTO;
 import com.vseven.launchpad.dto.response.*;
 import com.vseven.launchpad.entity.Link;
 import com.vseven.launchpad.entity.User;
+import com.vseven.launchpad.entity.Duo;
 import com.vseven.launchpad.exception.BadRequestException;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
 import com.vseven.launchpad.exception.response.ErrorDictionary;
@@ -16,6 +17,7 @@ import com.vseven.launchpad.repository.UserRepository;
 import com.vseven.launchpad.entity.*;
 import com.vseven.launchpad.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -195,28 +197,23 @@ public class QuickLinkController {
                 }
             }
         }
-//        } else {
-//            // Debugging purposes
-//            System.out.println("Section order null");
-//        }
 
         //Used for linkOrder
         List<LinkOrderDTO> linkOrderDTOList =  combinedDTO.getLinkOrderDTOList();
 
         if (linkOrderDTOList != null) {
 
-
-
             Integer sectionDtoLength = linkOrderDTOList.size();
             long linkLength = linkRepository.count();
 
 
-            List<Integer> dtoLinkIds = new ArrayList<>();
+            List<Duo> sectionAndLinkPairList = new ArrayList<>();
+
             for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
-                dtoLinkIds.add(linkOrderDTO.getLinkOrder());
+                sectionAndLinkPairList.add(new Duo(linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder()));
             }
 
-            if (sectionDtoLength != linkLength && hasDuplicateElements(dtoLinkIds)) {
+            if (sectionDtoLength != linkLength || hasDuplicateLinkIdsandOrder(sectionAndLinkPairList)) {
                 throw new ResourceNotFoundException(ErrorDictionary.BR_001);
             }
             
@@ -275,7 +272,7 @@ public class QuickLinkController {
             }
         }
         MessageResponse response = MessageResponse.builder()
-                .message("Successfully Unbookmark")
+                .message("Successful Unbookmark")
                 .build();
 
         return ResponseEntity.ok(response);
@@ -317,6 +314,21 @@ public class QuickLinkController {
         // No duplicates found
         return false;
     }
+
+    private boolean hasDuplicateLinkIdsandOrder(List<Duo> theList) {
+        Set<Duo> seenSet = new HashSet<>();
+
+        for (Duo duo : theList) {
+            // If the number is already in the set, it's a duplicate
+            if (!seenSet.add(duo)) {
+                return true; // Duplicate found
+            }
+        }
+
+        // No duplicates found
+        return false;
+    }
+
 
 
 }

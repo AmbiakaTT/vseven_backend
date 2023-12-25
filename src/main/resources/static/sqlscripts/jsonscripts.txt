@@ -20,15 +20,15 @@ api/user1/save
 --- TONY-----
 Request Body for api/user2/save
 {
-//   "quickLinkDTO": { "linksId": [2] },
+   "quickLinkDTO": { "linksId": [2] },
 
-//   "linkOrderDTOList": [
-//     {"userId": 2, "linkId": 10, "sectionId": 3, "linkOrder": 5},
-//     {"userId": 2, "linkId": 11, "sectionId": 3, "linkOrder": 2},
-//     {"userId": 2, "linkId": 12, "sectionId": 3, "linkOrder": 1},
-//     {"userId": 2, "linkId": 13, "sectionId": 3, "linkOrder": 3},
-//     {"userId": 2, "linkId": 14, "sectionId": 3, "linkOrder": 4}
-//   ],
+   "linkOrderDTOList": [
+     {"userId": 2, "linkId": 10, "sectionId": 3, "linkOrder": 5},
+     {"userId": 2, "linkId": 11, "sectionId": 3, "linkOrder": 2},
+     {"userId": 2, "linkId": 12, "sectionId": 3, "linkOrder": 1},
+     {"userId": 2, "linkId": 13, "sectionId": 3, "linkOrder": 3},
+     {"userId": 2, "linkId": 14, "sectionId": 3, "linkOrder": 4}
+   ],
 
   "sectionOrderDTOList": [
         {"userId": 2, "sectionId": 1, "order": 3},
