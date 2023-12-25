@@ -10,13 +10,10 @@ import com.vseven.launchpad.entity.User;
 import com.vseven.launchpad.exception.BadRequestException;
 import com.vseven.launchpad.exception.ResourceNotFoundException;
 import com.vseven.launchpad.exception.response.ErrorDictionary;
-import com.vseven.launchpad.repository.LinkClickRepository;
 import com.vseven.launchpad.repository.LinkRepository;
 import com.vseven.launchpad.repository.UserQuickLinkRepository;
 import com.vseven.launchpad.repository.UserRepository;
 import com.vseven.launchpad.entity.*;
-import com.vseven.launchpad.exception.ResourceNotFoundException;
-import com.vseven.launchpad.exception.response.ErrorDictionary;
 import com.vseven.launchpad.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -209,12 +206,17 @@ public class QuickLinkController {
         if (linkOrderDTOList != null) {
 
 
+
+            Integer sectionDtoLength = linkOrderDTOList.size();
+            long linkLength = linkRepository.count();
+
+
             List<Integer> dtoLinkIds = new ArrayList<>();
             for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
                 dtoLinkIds.add(linkOrderDTO.getLinkId());
             }
 
-            if (hasDuplicateElements(dtoLinkIds)) {
+            if (sectionDtoLength != linkLength && hasDuplicateElements(dtoLinkIds)) {
                 throw new ResourceNotFoundException(ErrorDictionary.BR_001);
             }
             

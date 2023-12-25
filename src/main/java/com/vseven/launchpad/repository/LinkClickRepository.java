@@ -21,4 +21,6 @@ public interface LinkClickRepository extends JpaRepository< LinkClick, Integer> 
     @Query(value = "INSERT INTO LinkClicks (link_id, num_of_clicks) VALUES (:linkId, :numOfClicks) " +
             "ON DUPLICATE KEY UPDATE num_of_clicks = VALUES(num_of_clicks)", nativeQuery = true)
     void saveLinkClickNativeQuery(Integer linkId, Integer numOfClicks);
+
+    long count();
 }
