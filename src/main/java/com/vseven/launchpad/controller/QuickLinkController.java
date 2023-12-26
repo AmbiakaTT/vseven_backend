@@ -18,6 +18,7 @@ import com.vseven.launchpad.entity.*;
 import com.vseven.launchpad.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
+import org.aspectj.bridge.Message;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -262,7 +263,7 @@ public class QuickLinkController {
     }
 
     @PostMapping("/{username}/unbookmark")
-    public ResponseEntity<?> deleteQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
+    public ResponseEntity<MessageResponse> deleteQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
         List<Integer> linkIds = quickLinkDTO.getLinksId();
 
         User user = userRepository.findByUserName(username);
@@ -271,7 +272,7 @@ public class QuickLinkController {
         }
 
         for (Integer id : linkIds) {
-            Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(id));
+            Optional<Link> linkOptional = linkRepository.findByLinkId(id);
             Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, id);
             if (linkOptional.isPresent() && quickLinkOptional.isPresent()) {
                 userQuickLinkRepository.deleteByUserNameAndLinkId(username, id);
