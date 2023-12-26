@@ -6,10 +6,10 @@ import lombok.experimental.SuperBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
+//@NoArgsConstructor
+//@AllArgsConstructor
 @Getter
-@Setter
+//@Setter
 @ToString
 public class SectionOrderResponse {
     private Integer sectionId;

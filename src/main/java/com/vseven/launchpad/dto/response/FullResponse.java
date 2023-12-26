@@ -9,10 +9,10 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
+//@NoArgsConstructor
+//@AllArgsConstructor
 @Getter
-@Setter
+//@Setter
 @ToString
 public class FullResponse {
     private String userName;

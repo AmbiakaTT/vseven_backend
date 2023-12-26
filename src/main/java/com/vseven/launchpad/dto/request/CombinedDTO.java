@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
+//@Setter
 @ToString
 @Data
 public class CombinedDTO {
