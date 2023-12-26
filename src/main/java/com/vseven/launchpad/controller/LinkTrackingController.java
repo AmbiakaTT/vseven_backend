@@ -2,6 +2,7 @@ package com.vseven.launchpad.controller;
 
 import com.vseven.launchpad.dto.request.LinkTrackingDTO;
 import com.vseven.launchpad.dto.response.LinkResponse;
+import com.vseven.launchpad.dto.response.LinkTrackingResponse;
 import com.vseven.launchpad.dto.response.MessageResponse;
 import com.vseven.launchpad.entity.Link;
 import com.vseven.launchpad.entity.LinkClick;
@@ -34,7 +35,7 @@ public class LinkTrackingController {
     private final LinkRepository linkRepository;
 
     @GetMapping("/top-links")
-    public ResponseEntity<?> getTopLinks() {
+    public ResponseEntity<LinkTrackingResponse> getTopLinks() {
 
         List<LinkClick> topLinks  = linkClickRepository.findTop5ByOrderByNumOfClicksDesc();
 
@@ -50,18 +51,22 @@ public class LinkTrackingController {
                 })
                 .toList();
 
-        Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("topLinks", topLinksContent);
+//        Map<String, Object> responseMap = new HashMap<>();
+//        responseMap.put("topLinks", topLinksContent);
 
-        return ResponseEntity.ok(responseMap);
+        LinkTrackingResponse response = LinkTrackingResponse.builder()
+                .topLinks(topLinksContent)
+                .build();
+
+        return ResponseEntity.ok(response);
 
     }
 
     @PostMapping("/top-links")
-    public ResponseEntity<?> updateLinks(@RequestBody @NotNull List<LinkTrackingDTO> linkTrackingDTO) {
+    public ResponseEntity<MessageResponse> updateLinks(@RequestBody @NotNull List<LinkTrackingDTO> linkTrackingDTO) {
 
         for (LinkTrackingDTO trackingLink  : linkTrackingDTO ) {
-            Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(trackingLink.getLinkId()));
+            Optional<Link> linkOptional = linkRepository.findByLinkId(trackingLink.getLinkId());
             if (linkOptional.isPresent()) {
                 linkClickRepository.saveLinkClickNativeQuery(trackingLink.getLinkId(), trackingLink.getNumOfClicks());
             }
