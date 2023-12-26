@@ -131,7 +131,7 @@ public class QuickLinkController {
 
 
     @PostMapping("/{username}/save")
-    public ResponseEntity<?> saveUserQuickLinks(@PathVariable String username, @RequestBody CombinedDTO combinedDTO) {
+    public ResponseEntity<MessageResponse> saveUserQuickLinks(@PathVariable String username, @RequestBody CombinedDTO combinedDTO) {
 
         User user = userRepository.findByUserName(username);
         Integer userId  = user.getUserId();
@@ -144,7 +144,7 @@ public class QuickLinkController {
         if (quickLinkDTO != null  ) {
             List<Integer> linkIds = quickLinkDTO.getLinksId();
             for (Integer linkId : linkIds) {
-                Optional<Link> linkOptional = linkRepository.findById(Long.valueOf(linkId));
+                Optional<Link> linkOptional = linkRepository.findByLinkId(linkId);
                 Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, linkId);
 
 
@@ -160,9 +160,10 @@ public class QuickLinkController {
                 } else {
                     if (!linkOptional.isPresent()) {
                         throw new ResourceNotFoundException(ErrorDictionary.NF_005);
-                    } else {
-                        throw new ResourceNotFoundException(ErrorDictionary.NF_004);
                     }
+//                    else {
+//                        throw new ResourceNotFoundException(ErrorDictionary.NF_004);
+//                    }
                 }
             }
         }
