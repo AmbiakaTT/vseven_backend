@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
+    @ExceptionHandler({ResourceNotFoundException.class})
     public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(
             ResourceNotFoundException exception
     ) {
@@ -25,7 +25,7 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(response, exception.getStatus());
     }
 
-    @ExceptionHandler(BadRequestException.class)
+    @ExceptionHandler({BadRequestException.class})
     public ResponseEntity<ExceptionResponse> handleBadRequestException(
             BadRequestException exception
     ) {
