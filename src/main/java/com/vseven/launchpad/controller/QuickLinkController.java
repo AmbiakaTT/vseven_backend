@@ -183,7 +183,7 @@ public class QuickLinkController {
             }
 
             if (sectionLength != sectionDtoLength || hasDuplicateElements(dtoIds) ) {
-                throw new ResourceNotFoundException(ErrorDictionary.BR_001);
+                throw new BadRequestException(ErrorDictionary.BR_001);
             }
 
             for (SectionOrderDTO sectionOrder : sectionOrderDTOList) {
@@ -227,7 +227,7 @@ public class QuickLinkController {
 //            System.out.println(linkDtoLength);
 
             if ( totalLinks != linkDtoLength || hasDuplicateLinkIdsAndOrder(sectionAndLinkPairList)) {
-                throw new ResourceNotFoundException(ErrorDictionary.BR_001);
+                throw new BadRequestException(ErrorDictionary.BR_001);
             }
             
 
