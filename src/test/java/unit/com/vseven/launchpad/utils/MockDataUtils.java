@@ -1,9 +1,6 @@
 package unit.com.vseven.launchpad.utils;
 
-import com.vseven.launchpad.dto.request.CombinedDTO;
-import com.vseven.launchpad.dto.request.LinkOrderDTO;
-import com.vseven.launchpad.dto.request.QuickLinkDTO;
-import com.vseven.launchpad.dto.request.SectionOrderDTO;
+import com.vseven.launchpad.dto.request.*;
 import com.vseven.launchpad.dto.response.*;
 import com.vseven.launchpad.entity.*;
 
@@ -67,6 +64,14 @@ public class MockDataUtils {
             .build();
     public static List<LinkOrder> MOCK_LINK_ORDER_LIST = Arrays.asList(MOCK_LINK_ORDER_ENTITY);
 
+    // LinkClick entity
+    public static Integer MOCK_NUM_OF_CLICKS = 100;
+    public static LinkClick MOCK_LINK_CLICK = LinkClick.builder()
+            .link(MOCK_LINK)
+            .numOfClicks(MOCK_NUM_OF_CLICKS)
+            .build();
+    public static List<LinkClick> MOCK_LINK_CLICK_LIST = Arrays.asList(MOCK_LINK_CLICK);
+
     // DTO (Request body)
     public static QuickLinkDTO MOCK_QUICK_LINK_DTO = QuickLinkDTO.builder()
             .linksId(Arrays.asList(MOCK_LINK_ID))
@@ -90,6 +95,13 @@ public class MockDataUtils {
             .linkOrderDTOList(Arrays.asList(MOCK_LINK_ORDER_DTO))
             .sectionOrderDTOList(Arrays.asList(MOCK_SECTION_ORDER_DTO))
             .build();
+
+    public static LinkTrackingDTO MOCK_LINK_TRACKING_DTO = LinkTrackingDTO.builder()
+            .linkId(MOCK_LINK_ID)
+            .numOfClicks(MOCK_NUM_OF_CLICKS)
+            .build();
+
+    public static List<LinkTrackingDTO> MOCK_LINK_TRACKING_DTO_LIST = Arrays.asList(MOCK_LINK_TRACKING_DTO);
 
     // Response
     public static LinkResponse MOCK_LINK_RESPONSE = LinkResponse.builder()
@@ -133,6 +145,15 @@ public class MockDataUtils {
             .message("Successfully Reset")
             .build();
 
+    public static MessageResponse MOCK_UPDATE_LINK_MESSAGE_RESPONSE = MessageResponse.builder()
+            .message("Link Tracking Successfully Updated")
+            .build();
+
+    // Link Tracking Response
+    public static List<LinkResponse> MOCK_LINK_RESPONSE_LIST = Arrays.asList(MOCK_LINK_RESPONSE);
+    public static LinkTrackingResponse MOCK_LINK_TRACKING_RESPONSE = LinkTrackingResponse.builder()
+            .topLinks(MOCK_LINK_RESPONSE_LIST)
+            .build();
 
 
 }
