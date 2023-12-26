@@ -125,5 +125,14 @@ public class MockDataUtils {
             .message("Successfully Saved")
             .build();
 
+    public static MessageResponse MOCK_UNBOOKMARK_MESSAGE_RESPONSE = MessageResponse.builder()
+            .message("Successful Unbookmark")
+            .build();
+
+    public static MessageResponse MOCK_RESET_MESSAGE_RESPONSE = MessageResponse.builder()
+            .message("Successfully Reset")
+            .build();
+
+
 
 }

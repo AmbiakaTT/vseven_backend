@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -79,8 +80,35 @@ public class QuickLinkControllerTest {
 
         String userName = "test user";
         ResponseEntity<MessageResponse> response = controller.saveUserQuickLinks(userName, MockDataUtils.MOCK_COMBINED_DTO);
+
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().toString(), is(MockDataUtils.MOCK_SAVE_MESSAGE_RESPONSE.toString()));
+
+    }
+
+    @Test
+    public void unbookmarkAPI_validRequest_returnSuccess() throws Exception {
+        when(userRepository.findByUserName(any())).thenReturn(MockDataUtils.MOCK_USER);
+        when(linkRepository.findByLinkId(any())).thenReturn(MockDataUtils.MOCK_LINK_OPTIONAL);
+        when(userQuickLinkRepository.findByUserNameAndLinkId(any(), any())).thenReturn(MockDataUtils.MOCK_USER_QUICK_LINK_OPTIONAL);
+
+        String userName = "test user";
+        ResponseEntity<MessageResponse> response = controller.deleteQuickLinks(userName, MockDataUtils.MOCK_QUICK_LINK_DTO);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().toString(), is(MockDataUtils.MOCK_UNBOOKMARK_MESSAGE_RESPONSE.toString()));
+
+    }
+
+    @Test
+    public void resetAPI_validRequest_returnSuccess() throws Exception {
+        when(userRepository.findByUserName(any())).thenReturn(MockDataUtils.MOCK_USER);
+
+        String userName = "test user";
+        ResponseEntity<?> response = controller.resetToHomePage(userName);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().toString(), is(MockDataUtils.MOCK_RESET_MESSAGE_RESPONSE.toString()));
 
     }
 
