@@ -14,19 +14,31 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name="SectionOrder")
-public class SectionOrder {
+@Entity(name="LinkOrder")
+public class LinkOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="section_order_id")
-    private Integer sectionOrderId;
+    @Column(name="link_order_id")
+    private Integer linkOrderId;
 
     @ManyToOne
     @JsonIgnore
     @JsonBackReference
     @Getter
     @NotNull
-    @JoinColumn(name = "section_id", referencedColumnName = "section_id")
+    @JoinColumns({
+            @JoinColumn(name = "link_id", referencedColumnName = "link_id"),
+    })
+    private Link link;
+
+    @ManyToOne
+    @JsonIgnore
+    @JsonBackReference
+    @Getter
+    @NotNull
+    @JoinColumns({
+            @JoinColumn(name = "section_id", referencedColumnName = "section_id"),
+    })
     private Section section;
 
     @ManyToOne
@@ -37,6 +49,6 @@ public class SectionOrder {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
-    @Column(name="section_order")
-    private Integer sectionOrder;
+    @Column(name="link_order")
+    private Integer linkOrder;
 }

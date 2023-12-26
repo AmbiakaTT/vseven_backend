@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
 @NoArgsConstructor
@@ -14,6 +13,13 @@ import java.util.List;
 @Setter
 @ToString
 @Data
-public class QuickLinkDTO {
-    private List<Integer> linksId;
+public class LinkOrderDTO {
+
+    private Integer sectionId;
+
+    private Integer userId;
+
+    private Integer linkId;
+
+    private Integer linkOrder;
 }
