@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-//@Setter
+@Setter
 @ToString
 @Data
 public class SectionOrderDTO {
