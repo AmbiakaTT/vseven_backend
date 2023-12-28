@@ -23,7 +23,7 @@ public class MockDataUtils {
     public static Integer MOCK_USER_ID = 1;
     public static String MOCK_USER_EMAIL = "example@vinuni.edu.vn";
     public static String MOCK_PWD_HASH = "password hash";
-    public static User MOCK_USER = User.builder()
+    public static User MOCK_USER_1 = User.builder()
             .userId(MOCK_USER_ID)
             .userName(MOCK_USER_NAME)
             .email(MOCK_USER_EMAIL)
@@ -31,6 +31,34 @@ public class MockDataUtils {
             .enabled(1)
             //.quickLinks(MOCK_USER_QUICK_LINK_LIST)
             .build();
+    public static User MOCK_USER_2 = User.builder()
+            .userId(2)
+            .userName("user2")
+            .email("user2@vinuni.edu.vn")
+            .passwordHash("password hash 2")
+            .enabled(1)
+            .build();
+    public static UserResponse MOCK_USER_1_RESPONSE = UserResponse.builder()
+            .userId(MOCK_USER_ID)
+            .userName(MOCK_USER_NAME)
+            .email(MOCK_USER_EMAIL)
+            .passwordHash(MOCK_PWD_HASH)
+            .enabled(1)
+            .build();
+    public static UserResponse MOCK_USER_2_RESPONSE = UserResponse.builder()
+            .userId(2)
+            .userName("user2")
+            .email("user2@vinuni.edu.vn")
+            .passwordHash("password hash 2")
+            .enabled(1)
+            .build();
+
+    public static List<UserResponse> MOCK_USER_RESPONSE_LIST = Arrays.asList(MOCK_USER_1_RESPONSE, MOCK_USER_2_RESPONSE);
+
+    public static List<User> MOCK_USER_LIST = Arrays.asList(MOCK_USER_1, MOCK_USER_2);
+
+    public static Optional<User> MOCK_USER_OPTIONAL = Optional.of(MOCK_USER_1);
+    public static Optional<UserResponse> MOCK_USER_RESPONSE_OPTIONAL = Optional.of(MOCK_USER_1_RESPONSE);
 
     // Link Entity
     public static Link MOCK_LINK = Link.builder()
@@ -45,7 +73,7 @@ public class MockDataUtils {
     public static Integer MOCK_USER_QUICK_LINK_ID = 1;
     public static UserQuickLink MOCK_USER_QUICK_LINK = UserQuickLink.builder()
             .link(MOCK_LINK)
-            .user(MOCK_USER)
+            .user(MOCK_USER_1)
             .userQuickLinkId(MOCK_USER_QUICK_LINK_ID)
             .build();
     public static List<UserQuickLink> MOCK_USER_QUICK_LINK_LIST = Arrays.asList(MOCK_USER_QUICK_LINK);
@@ -62,7 +90,7 @@ public class MockDataUtils {
     public static SectionOrder MOCK_SECTION_ORDER_ENTITY = SectionOrder.builder()
             .section(MOCK_SECTION)
             .sectionOrder(MOCK_SECTION_ORDER)
-            .user(MOCK_USER)
+            .user(MOCK_USER_1)
             .build();
     public static List<SectionOrder> MOCK_SECTION_ORDER_LIST = Arrays.asList(MOCK_SECTION_ORDER_ENTITY);
 
