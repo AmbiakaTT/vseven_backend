@@ -17,11 +17,19 @@ public class MockDataUtils {
     public static String MOCK_SECTION_NAME = "section name";
     public static Integer MOCK_LINK_ORDER = 1;
     public static Integer MOCK_SECTION_ORDER = 1;
+
+    // User Entity
     public static String MOCK_USER_NAME = "test user";
     public static Integer MOCK_USER_ID = 1;
+    public static String MOCK_USER_EMAIL = "example@vinuni.edu.vn";
+    public static String MOCK_PWD_HASH = "password hash";
     public static User MOCK_USER = User.builder()
             .userId(MOCK_USER_ID)
             .userName(MOCK_USER_NAME)
+            .email(MOCK_USER_EMAIL)
+            .passwordHash(MOCK_PWD_HASH)
+            .enabled(1)
+            //.quickLinks(MOCK_USER_QUICK_LINK_LIST)
             .build();
 
     // Link Entity
@@ -34,9 +42,11 @@ public class MockDataUtils {
     public static Optional<Link> MOCK_LINK_OPTIONAL = Optional.of(MOCK_LINK);
 
     // UserQuickLink entity
+    public static Integer MOCK_USER_QUICK_LINK_ID = 1;
     public static UserQuickLink MOCK_USER_QUICK_LINK = UserQuickLink.builder()
             .link(MOCK_LINK)
             .user(MOCK_USER)
+            .userQuickLinkId(MOCK_USER_QUICK_LINK_ID)
             .build();
     public static List<UserQuickLink> MOCK_USER_QUICK_LINK_LIST = Arrays.asList(MOCK_USER_QUICK_LINK);
     public static Optional<UserQuickLink> MOCK_USER_QUICK_LINK_OPTIONAL = Optional.of(MOCK_USER_QUICK_LINK);
