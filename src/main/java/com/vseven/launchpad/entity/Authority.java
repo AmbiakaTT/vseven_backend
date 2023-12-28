@@ -6,11 +6,12 @@ import jakarta.persistence.Entity;
 import lombok.*;
 
 //test
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+
+//@Getter
+//@Setter
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@ToString
 @Entity(name = "authorities")
 public class Authority {
     @Id
