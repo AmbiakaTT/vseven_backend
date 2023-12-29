@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.Objects;
 
 @Getter
-@Setter
+//@Setter
 @AllArgsConstructor
 public class Duo {
     Integer first;

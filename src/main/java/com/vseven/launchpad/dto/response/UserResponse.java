@@ -1,6 +1,7 @@
 package com.vseven.launchpad.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -11,11 +12,16 @@ import lombok.experimental.SuperBuilder;
 @Getter
 //@Setter
 @ToString
-public class LinkResponse {
-    private Integer linkId;
+public class UserResponse {
+    private Integer userId;
 
-    private String linkName;
+    private String userName;
 
-    private String url;
+    private String email;
+
+    private String passwordHash;
+
+    private Integer enabled;
+
 
 }

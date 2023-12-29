@@ -9,7 +9,7 @@ import lombok.*;
 import java.util.List;
 
 @Getter
-@Setter
+//@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,10 +39,10 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<UserQuickLink> quickLinks;
     
-    @JsonIgnore
-    @JsonManagedReference
-    public List<UserQuickLink> getQuickLinks() {
-        return quickLinks;
-    }
+//    @JsonIgnore
+//    @JsonManagedReference
+//    public List<UserQuickLink> getQuickLinks() {
+//        return quickLinks;
+//    }
     
 }

@@ -23,25 +23,25 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    @Override
-    public void save(User theUser)  {
-        userRepository.save(theUser);
+//    @Override
+//    public void save(User theUser)  {
+//        userRepository.save(theUser);
+//
+//    }
 
-    }
+//    @Override
+//    public User findByUserName(String username) {
+//        return userRepository.findByUserName(username);
+//    }
 
-    @Override
-    public User findByUserName(String username) {
-        return userRepository.findByUserName(username);
-    }
-
-    @Override
-    public void deleteById(Integer theId) {
-        userRepository.deleteById(Long.valueOf(theId));
-    }
-    @Override
-    public boolean existsById(Integer aLong) {
-        return userRepository.existsById(Long.valueOf(aLong));
-    }
+//    @Override
+//    public void deleteById(Integer theId) {
+//        userRepository.deleteById(Long.valueOf(theId));
+//    }
+//    @Override
+//    public boolean existsById(Integer aLong) {
+//        return userRepository.existsById(Long.valueOf(aLong));
+//    }
 
     @Override
     public Optional<User> findById(Integer aLong) {

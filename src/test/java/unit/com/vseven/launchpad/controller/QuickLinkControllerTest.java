@@ -52,7 +52,7 @@ public class QuickLinkControllerTest {
 
     @Test
     public void getAPI_validRequest_returnSuccess() throws Exception{
-        when(userRepository.findByUserName(any())).thenReturn(MockDataUtils.MOCK_USER);
+        when(userRepository.findByUserName(any())).thenReturn(MockDataUtils.MOCK_USER_1);
         when(userQuickLinkRepository.findByUserUserName(any())).thenReturn(MockDataUtils.MOCK_USER_QUICK_LINK_LIST);
         when(sectionOrderRepository.findByUserUserName(any())).thenReturn(MockDataUtils.MOCK_SECTION_ORDER_LIST);
         when(linkOrderRepository.findByUserUserName(any())).thenReturn(MockDataUtils.MOCK_LINK_ORDER_LIST);
@@ -66,7 +66,7 @@ public class QuickLinkControllerTest {
 
     @Test
     public void saveAPI_validRequest_returnSuccess() throws Exception{
-        when(userRepository.findByUserName(any())).thenReturn(MockDataUtils.MOCK_USER);
+        when(userRepository.findByUserName(any())).thenReturn(MockDataUtils.MOCK_USER_1);
         when(linkRepository.findByLinkId(any())).thenReturn(MockDataUtils.MOCK_LINK_OPTIONAL);
         when(userQuickLinkRepository.findByUserNameAndLinkId(any(), any())).thenReturn(MockDataUtils.MOCK_USER_QUICK_LINK_OPTIONAL);
         when(sectionRepository.findById(any())).thenReturn(MockDataUtils.MOCK_SECTION_OPTIONAL);
@@ -88,7 +88,7 @@ public class QuickLinkControllerTest {
 
     @Test
     public void unbookmarkAPI_validRequest_returnSuccess() throws Exception {
-        when(userRepository.findByUserName(any())).thenReturn(MockDataUtils.MOCK_USER);
+        when(userRepository.findByUserName(any())).thenReturn(MockDataUtils.MOCK_USER_1);
         when(linkRepository.findByLinkId(any())).thenReturn(MockDataUtils.MOCK_LINK_OPTIONAL);
         when(userQuickLinkRepository.findByUserNameAndLinkId(any(), any())).thenReturn(MockDataUtils.MOCK_USER_QUICK_LINK_OPTIONAL);
 
@@ -102,7 +102,7 @@ public class QuickLinkControllerTest {
 
     @Test
     public void resetAPI_validRequest_returnSuccess() throws Exception {
-        when(userRepository.findByUserName(any())).thenReturn(MockDataUtils.MOCK_USER);
+        when(userRepository.findByUserName(any())).thenReturn(MockDataUtils.MOCK_USER_1);
 
         String userName = "test user";
         ResponseEntity<?> response = controller.resetToHomePage(userName);
