@@ -28,7 +28,7 @@ public interface UserQuickLinkRepository extends JpaRepository<UserQuickLink, In
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM UserQuickLink " +
-            "where user_name= ?1 " +
+            "WHERE user_name= ?1 " +
             "AND link_id= ?2", nativeQuery = true)
     void deleteByUserNameAndLinkId(String username, Integer linkId);
 
@@ -38,8 +38,7 @@ public interface UserQuickLinkRepository extends JpaRepository<UserQuickLink, In
             "WHERE user_name= ?1 " +
             "AND link_id IN (?2)", nativeQuery = true)
     void deleteByUserNameAndLinkIdsNativeQuery(String a, List<Integer> b);
-
-
+    
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM UserQuickLink " +

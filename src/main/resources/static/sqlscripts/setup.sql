@@ -60,7 +60,7 @@ ALTER TABLE `authorities` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`user_i
 
 -- Insert data into the User table
 INSERT INTO User (user_name, email, password_hash, enabled) VALUES
-('user1', 'user1@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 1),
+('user1', 'user1@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.h3JnsgN82On5aI/g79Q74lOqB/LOme', 1),
 ('user2', 'user2@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 1),
 ('user3', 'user3@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 1),
 ('user4', 'user4@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 1),
