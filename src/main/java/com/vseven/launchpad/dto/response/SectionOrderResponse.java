@@ -17,4 +17,8 @@ public class SectionOrderResponse {
     private String sectionName;
 
     private Integer sectionOrder;
+
+    private String index;
+
+    private String column;
 }

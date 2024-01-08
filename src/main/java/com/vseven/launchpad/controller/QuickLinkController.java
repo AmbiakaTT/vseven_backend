@@ -84,7 +84,8 @@ public class QuickLinkController {
                     SectionOrderResponse sectionOrderResponse = SectionOrderResponse.builder()
                             .sectionId(sectionOrder.getSection().getSectionId())
                             .sectionName(sectionOrder.getSection().getSectionName())
-                            .sectionOrder(sectionOrder.getSectionOrder())
+                            .index(String.valueOf(sectionOrder.getIndex()))
+                            .column(String.valueOf(sectionOrder.getColumn()))
                             .build();
 
                     return sectionOrderResponse;
@@ -177,12 +178,12 @@ public class QuickLinkController {
             Integer sectionDtoLength = sectionOrderDTOList.size();
             long sectionLength = sectionRepository.count();
 
-            List<Integer> dtoIds = new ArrayList<>();
+            List<Duo> dtoIds = new ArrayList<>();
             for (SectionOrderDTO sectionOrder : sectionOrderDTOList) {
-                dtoIds.add(sectionOrder.getOrder());
+                dtoIds.add(new Duo(sectionOrder.getIndex(), sectionOrder.getColumn()));
             }
 
-            if (sectionLength != sectionDtoLength || hasDuplicateElements(dtoIds) ) {
+            if (sectionLength != sectionDtoLength || hasDuplicateColumnAndIndex(dtoIds) ) {
                 throw new BadRequestException(ErrorDictionary.BR_001);
             }
 
@@ -192,7 +193,7 @@ public class QuickLinkController {
                     throw new BadRequestException(ErrorDictionary.BR_001);
                 }
                 if (sectionOptional.isPresent()) {
-                    sectionOrderRepository.saveSectionOrderNativeQuery(sectionOrder.getUserId(), sectionOrder.getSectionId(), sectionOrder.getOrder());
+                    sectionOrderRepository.saveSectionOrderNativeQuery(sectionOrder.getUserId(), sectionOrder.getSectionId(), sectionOrder.getIndex(), sectionOrder.getColumn());
 
                 } else {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_006);
@@ -329,6 +330,20 @@ public class QuickLinkController {
     }
 
     private boolean hasDuplicateLinkIdsAndOrder(List<Duo> theList) {
+        Set<Duo> seenSet = new HashSet<>();
+
+        for (Duo duo : theList) {
+            // If the number is already in the set, it's a duplicate
+            if (!seenSet.add(duo)) {
+                return true; // Duplicate found
+            }
+        }
+
+        // No duplicates found
+        return false;
+    }
+
+    private boolean hasDuplicateColumnAndIndex(List<Duo> theList) {
         Set<Duo> seenSet = new HashSet<>();
 
         for (Duo duo : theList) {

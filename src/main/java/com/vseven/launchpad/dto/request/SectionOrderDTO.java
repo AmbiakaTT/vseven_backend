@@ -19,6 +19,8 @@ public class SectionOrderDTO {
 
     private Integer userId;
 
-    private Integer order;
+    private Integer index;
+
+    private Integer column;
 
 }

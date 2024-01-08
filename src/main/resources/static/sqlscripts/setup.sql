@@ -168,29 +168,13 @@ CREATE TABLE SectionOrder (
   section_order_id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT,
   section_id INT,
-  section_order INT,
+  section_index INT,
+  section_column INT,
   FOREIGN KEY (user_id) REFERENCES User(user_id),
   FOREIGN KEY (section_id) REFERENCES Section(section_id),
   UNIQUE KEY unique_user_section (user_id, section_id)
 );
 
-
-INSERT INTO SectionOrder (section_order_id, user_id, section_id, section_order)
-VALUES
-  -- User 1
-  (1, 1, 1, 1), (2, 1, 2, 2), (3, 1, 3, 3), (4, 1, 4, 4), (5, 1, 5, 5), (6, 1, 6, 6), (7, 1, 7, 7), (8, 1, 8, 8), (9, 1, 9, 9), (10, 1, 10, 10),
-
-  -- User 2
-  (11, 2, 1, 1), (12, 2, 2, 2), (13, 2, 3, 3), (14, 2, 4, 4), (15, 2, 5, 5), (16, 2, 6, 6), (17, 2, 7, 7), (18, 2, 8, 8), (19, 2, 9, 9), (20, 2, 10, 10),
-
-  -- User 3
-  (21, 3, 1, 1), (22, 3, 2, 2), (23, 3, 3, 3), (24, 3, 4, 4), (25, 3, 5, 5), (26, 3, 6, 6), (27, 3, 7, 7), (28, 3, 8, 8), (29, 3, 9, 9), (30, 3, 10, 10),
-
-  -- User 4
-  (31, 4, 1, 1), (32, 4, 2, 2), (33, 4, 3, 3), (34, 4, 4, 4), (35, 4, 5, 5), (36, 4, 6, 6), (37, 4, 7, 7), (38, 4, 8, 8), (39, 4, 9, 9), (40, 4, 10, 10),
-
-  -- User 5
-  (41, 5, 1, 1), (42, 5, 2, 2), (43, 5, 3, 3), (44, 5, 4, 4), (45, 5, 5, 5), (46, 5, 6, 6), (47, 5, 7, 7), (48, 5, 8, 8), (49, 5, 9, 9), (50, 5, 10, 10);
 
 
  CREATE TABLE LinkOrder (
@@ -268,4 +252,32 @@ VALUES
   (222, 5, 42, 9, 1), (223, 5, 43, 9, 2),
   (224, 5, 44, 10, 1), (225, 5, 45, 10, 2);
 
+
+
+-- User 1
+INSERT INTO SectionOrder (user_id, section_id, section_index, section_column)
+VALUES
+  (1, 1, 1, 1),
+  (1, 2, 2, 1),
+  (1, 3, 3, 2),
+  (1, 4, 4, 2),
+  (1, 5, 5, 3);
+
+-- User 2
+INSERT INTO SectionOrder (user_id, section_id, section_index, section_column)
+VALUES
+  (2, 1, 1, 1),
+  (2, 2, 2, 1),
+  (2, 3, 3, 2),
+  (2, 4, 4, 2),
+  (2, 5, 5, 3);
+
+-- User 3
+INSERT INTO SectionOrder (user_id, section_id, section_index, section_column)
+VALUES
+  (3, 1, 1, 1),
+  (3, 2, 2, 1),
+  (3, 3, 3, 2),
+  (3, 4, 4, 2),
+  (3, 5, 5, 3);
 

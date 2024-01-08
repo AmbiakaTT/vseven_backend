@@ -20,14 +20,15 @@ public interface SectionOrderRepository extends JpaRepository<SectionOrder, Inte
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO SectionOrder (user_id, section_id, section_order) VALUES (:userId, :sectionId, :sectionOrder) " +
-            "ON DUPLICATE KEY UPDATE section_order = VALUES(section_order)", nativeQuery = true)
-    void saveSectionOrderNativeQuery(Integer userId, Integer sectionId, Integer sectionOrder);
+    @Query(value = "INSERT INTO SectionOrder (user_id, section_id, section_index, section_column) VALUES (?1, ?2, ?3, ?4) " +
+            "ON DUPLICATE KEY UPDATE section_index = VALUES(section_index), section_column = VALUES(section_column)", nativeQuery = true)
+    void saveSectionOrderNativeQuery(Integer userId, Integer sectionId, Integer sectionIndex, Integer sectionColumn);
+
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE SectionOrder SET section_order = :sectionOrder " +
+    @Query(value = "UPDATE SectionOrder SET section_index = :sectionIndex, section_column = :sectionColumn " +
             "WHERE user_id = :userId AND section_id = :sectionId", nativeQuery = true)
-    void updateSectionOrderNativeQuery(Integer userId, Integer sectionId, Integer sectionOrder);
+    void updateSectionOrderNativeQuery(Integer userId, Integer sectionId, Integer sectionIndex, Integer sectionColumn);
 
 }

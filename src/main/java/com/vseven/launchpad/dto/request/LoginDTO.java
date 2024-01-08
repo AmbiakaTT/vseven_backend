@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@SuperBuilder
+@SuperBuilder 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
