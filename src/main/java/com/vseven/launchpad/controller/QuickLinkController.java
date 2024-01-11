@@ -70,7 +70,7 @@ public class QuickLinkController {
         List<LinkResponse> quickLinksContent = quickLinksList.stream()
                 .map(quickLink -> {
                     LinkResponse linkResponse = LinkResponse.builder()
-                            .linkId(quickLink.getLink().getLinkId())
+                            .linkId(String.valueOf(quickLink.getLink().getLinkId()))
                             .linkName(quickLink.getLink().getLinkName())
                             .url(quickLink.getLink().getUrl())
                             .build();
@@ -82,10 +82,10 @@ public class QuickLinkController {
         List<SectionOrderResponse> sectionOrderContent = sectionOrdersList.stream()
                 .map(sectionOrder -> {
                     SectionOrderResponse sectionOrderResponse = SectionOrderResponse.builder()
-                            .sectionId(sectionOrder.getSection().getSectionId())
+                            .sectionId(String.valueOf(sectionOrder.getSection().getSectionId()))
                             .sectionName(sectionOrder.getSection().getSectionName())
-                            .index(String.valueOf(sectionOrder.getIndex()))
-                            .column(String.valueOf(sectionOrder.getColumn()))
+                            .index(sectionOrder.getIndex())
+                            .column(sectionOrder.getColumn())
                             .build();
 
                     return sectionOrderResponse;
@@ -96,8 +96,8 @@ public class QuickLinkController {
         List<LinkOrderResponse> linkOrderContent = linkOrderList.stream()
                 .map(linkOrder -> {
                     LinkOrderResponse linkOrderResponse = LinkOrderResponse.builder()
-                            .sectionId(linkOrder.getSection().getSectionId())
-                            .linkId(linkOrder.getLink().getLinkId())
+                            .sectionId(String.valueOf(linkOrder.getSection().getSectionId()))
+                            .linkId(String.valueOf(linkOrder.getLink().getLinkId()))
                             .linkName(linkOrder.getLink().getLinkName())
                             .linkOrder(linkOrder.getLinkOrder())
                             .build();

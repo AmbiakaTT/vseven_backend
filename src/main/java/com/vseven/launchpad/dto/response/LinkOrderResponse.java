@@ -12,9 +12,9 @@ import lombok.experimental.SuperBuilder;
 //@Setter
 @ToString
 public class LinkOrderResponse {
-    private Integer sectionId;
+    private String sectionId;
 
-    private Integer linkId;
+    private String linkId;
 
     private String linkName;
 

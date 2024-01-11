@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 //@Setter
 @ToString
 public class LinkResponse {
-    private Integer linkId;
+    private String linkId;
 
     private String linkName;
 
