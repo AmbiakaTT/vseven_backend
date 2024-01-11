@@ -1,7 +1,10 @@
 package com.vseven.launchpad.dto.request;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -15,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 public class SectionOrderDTO {
 
-    private Integer sectionId;
+    private String sectionId;
 
     private Integer userId;
 

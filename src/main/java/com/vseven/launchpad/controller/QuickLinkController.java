@@ -144,10 +144,10 @@ public class QuickLinkController {
         //Used for QuickLink
         QuickLinkDTO quickLinkDTO = combinedDTO.getQuickLinkDTO();
         if (quickLinkDTO != null  ) {
-            List<Integer> linkIds = quickLinkDTO.getLinksId();
-            for (Integer linkId : linkIds) {
-                Optional<Link> linkOptional = linkRepository.findByLinkId(linkId);
-                Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, linkId);
+            List<String> linkIds = quickLinkDTO.getLinksId();
+            for (String linkId : linkIds) {
+                Optional<Link> linkOptional = linkRepository.findByLinkId(Integer.valueOf(linkId));
+                Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, Integer.valueOf(linkId));
 
 
                 if (linkOptional.isPresent() && !quickLinkOptional.isPresent()) {
@@ -188,12 +188,12 @@ public class QuickLinkController {
             }
 
             for (SectionOrderDTO sectionOrder : sectionOrderDTOList) {
-                Optional<Section> sectionOptional = sectionRepository.findById(sectionOrder.getSectionId());
+                Optional<Section> sectionOptional = sectionRepository.findById(Integer.valueOf(sectionOrder.getSectionId()));
                 if (!Objects.equals(sectionOrder.getUserId(), userId)) {
                     throw new BadRequestException(ErrorDictionary.BR_001);
                 }
                 if (sectionOptional.isPresent()) {
-                    sectionOrderRepository.saveSectionOrderNativeQuery(sectionOrder.getUserId(), sectionOrder.getSectionId(), sectionOrder.getIndex(), sectionOrder.getColumn());
+                    sectionOrderRepository.saveSectionOrderNativeQuery(sectionOrder.getUserId(), Integer.valueOf(sectionOrder.getSectionId()), sectionOrder.getIndex(), sectionOrder.getColumn());
 
                 } else {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_006);
@@ -216,7 +216,7 @@ public class QuickLinkController {
             List<Duo> sectionAndLinkPairList = new ArrayList<>();
 
             for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
-                Integer section = linkOrderDTO.getSectionId();
+                Integer section = Integer.valueOf(linkOrderDTO.getSectionId());
                 sectionAndLinkPairList.add(new Duo(section, linkOrderDTO.getLinkOrder()));
                 sectionSet.add(section);
             }
@@ -233,7 +233,7 @@ public class QuickLinkController {
             
 
             for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
-                Optional<Link> linkOptional = linkRepository.findByLinkId(linkOrderDTO.getLinkId());
+                Optional<Link> linkOptional = linkRepository.findByLinkId(Integer.valueOf(linkOrderDTO.getLinkId()));
                 Link linkObject = linkOptional.orElse(null);
 
 
@@ -243,11 +243,11 @@ public class QuickLinkController {
                         throw new BadRequestException(ErrorDictionary.BR_001);
                         //throw new ResourceNotFoundException(ErrorDictionary.BR_001);
                     }
-                    if (!Objects.equals(linkOrderDTO.getSectionId(), linkObject.getSectionId())) {
+                    if (!Objects.equals(Integer.valueOf(linkOrderDTO.getSectionId()), linkObject.getSectionId())) {
 
                         throw new ResourceNotFoundException(ErrorDictionary.NF_008);
                     }
-                    linkOrderRepository.saveLinkOrderNativeQuery(linkOrderDTO.getUserId(), linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder(), linkOrderDTO.getLinkId());
+                    linkOrderRepository.saveLinkOrderNativeQuery(linkOrderDTO.getUserId(), Integer.valueOf(linkOrderDTO.getSectionId()), linkOrderDTO.getLinkOrder(), Integer.valueOf(linkOrderDTO.getLinkId()));
 
                 } else {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_005);
@@ -265,18 +265,18 @@ public class QuickLinkController {
 
     @PostMapping("/{username}/unbookmark")
     public ResponseEntity<MessageResponse> deleteQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
-        List<Integer> linkIds = quickLinkDTO.getLinksId();
+        List<String> linkIds = quickLinkDTO.getLinksId();
 
         User user = userRepository.findByUserName(username);
         if (user == null) {
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
 
-        for (Integer id : linkIds) {
-            Optional<Link> linkOptional = linkRepository.findByLinkId(id);
-            Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, id);
+        for (String id : linkIds) {
+            Optional<Link> linkOptional = linkRepository.findByLinkId(Integer.valueOf(id));
+            Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, Integer.valueOf(id));
             if (linkOptional.isPresent() && quickLinkOptional.isPresent()) {
-                userQuickLinkRepository.deleteByUserNameAndLinkId(username, id);
+                userQuickLinkRepository.deleteByUserNameAndLinkId(username, Integer.valueOf(id));
             } else {
                 if (!linkOptional.isPresent()) {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_005);

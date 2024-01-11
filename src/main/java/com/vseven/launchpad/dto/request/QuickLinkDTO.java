@@ -1,7 +1,9 @@
 package com.vseven.launchpad.dto.request;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -15,5 +17,5 @@ import java.util.List;
 @ToString
 @Data
 public class QuickLinkDTO {
-    private List<Integer> linksId;
+    private List<String> linksId;
 }
