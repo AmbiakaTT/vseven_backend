@@ -12,9 +12,13 @@ import lombok.experimental.SuperBuilder;
 //@Setter
 @ToString
 public class SectionOrderResponse {
-    private Integer sectionId;
+    private String sectionId;
 
     private String sectionName;
 
     private Integer sectionOrder;
+
+    private Integer index;
+
+    private Integer column;
 }

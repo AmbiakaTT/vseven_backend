@@ -15,5 +15,5 @@ import java.util.List;
 @ToString
 @Data
 public class QuickLinkDTO {
-    private List<Integer> linksId;
+    private List<String> linksId;
 }

@@ -42,7 +42,7 @@ public class LinkTrackingController {
         List<LinkResponse> topLinksContent = topLinks.stream()
                 .map(topLink -> {
                     LinkResponse linkResponse = LinkResponse.builder()
-                            .linkId(topLink.getLink().getLinkId())
+                            .linkId(String.valueOf(topLink.getLink().getLinkId()))
                             .linkName(topLink.getLink().getLinkName())
                             .url(topLink.getLink().getUrl())
                             .build();

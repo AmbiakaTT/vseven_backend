@@ -70,7 +70,7 @@ public class QuickLinkController {
         List<LinkResponse> quickLinksContent = quickLinksList.stream()
                 .map(quickLink -> {
                     LinkResponse linkResponse = LinkResponse.builder()
-                            .linkId(quickLink.getLink().getLinkId())
+                            .linkId(String.valueOf(quickLink.getLink().getLinkId()))
                             .linkName(quickLink.getLink().getLinkName())
                             .url(quickLink.getLink().getUrl())
                             .build();
@@ -82,9 +82,10 @@ public class QuickLinkController {
         List<SectionOrderResponse> sectionOrderContent = sectionOrdersList.stream()
                 .map(sectionOrder -> {
                     SectionOrderResponse sectionOrderResponse = SectionOrderResponse.builder()
-                            .sectionId(sectionOrder.getSection().getSectionId())
+                            .sectionId(String.valueOf(sectionOrder.getSection().getSectionId()))
                             .sectionName(sectionOrder.getSection().getSectionName())
-                            .sectionOrder(sectionOrder.getSectionOrder())
+                            .index(sectionOrder.getIndex())
+                            .column(sectionOrder.getColumn())
                             .build();
 
                     return sectionOrderResponse;
@@ -95,8 +96,8 @@ public class QuickLinkController {
         List<LinkOrderResponse> linkOrderContent = linkOrderList.stream()
                 .map(linkOrder -> {
                     LinkOrderResponse linkOrderResponse = LinkOrderResponse.builder()
-                            .sectionId(linkOrder.getSection().getSectionId())
-                            .linkId(linkOrder.getLink().getLinkId())
+                            .sectionId(String.valueOf(linkOrder.getSection().getSectionId()))
+                            .linkId(String.valueOf(linkOrder.getLink().getLinkId()))
                             .linkName(linkOrder.getLink().getLinkName())
                             .linkOrder(linkOrder.getLinkOrder())
                             .build();
@@ -143,10 +144,10 @@ public class QuickLinkController {
         //Used for QuickLink
         QuickLinkDTO quickLinkDTO = combinedDTO.getQuickLinkDTO();
         if (quickLinkDTO != null  ) {
-            List<Integer> linkIds = quickLinkDTO.getLinksId();
-            for (Integer linkId : linkIds) {
-                Optional<Link> linkOptional = linkRepository.findByLinkId(linkId);
-                Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, linkId);
+            List<String> linkIds = quickLinkDTO.getLinksId();
+            for (String linkId : linkIds) {
+                Optional<Link> linkOptional = linkRepository.findByLinkId(Integer.valueOf(linkId));
+                Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, Integer.valueOf(linkId));
 
 
                 if (linkOptional.isPresent() && !quickLinkOptional.isPresent()) {
@@ -177,22 +178,22 @@ public class QuickLinkController {
             Integer sectionDtoLength = sectionOrderDTOList.size();
             long sectionLength = sectionRepository.count();
 
-            List<Integer> dtoIds = new ArrayList<>();
+            List<Duo> dtoIds = new ArrayList<>();
             for (SectionOrderDTO sectionOrder : sectionOrderDTOList) {
-                dtoIds.add(sectionOrder.getOrder());
+                dtoIds.add(new Duo(sectionOrder.getIndex(), sectionOrder.getColumn()));
             }
 
-            if (sectionLength != sectionDtoLength || hasDuplicateElements(dtoIds) ) {
+            if (sectionLength != sectionDtoLength || hasDuplicateColumnAndIndex(dtoIds) ) {
                 throw new BadRequestException(ErrorDictionary.BR_001);
             }
 
             for (SectionOrderDTO sectionOrder : sectionOrderDTOList) {
-                Optional<Section> sectionOptional = sectionRepository.findById(sectionOrder.getSectionId());
+                Optional<Section> sectionOptional = sectionRepository.findById(Integer.valueOf(sectionOrder.getSectionId()));
                 if (!Objects.equals(sectionOrder.getUserId(), userId)) {
                     throw new BadRequestException(ErrorDictionary.BR_001);
                 }
                 if (sectionOptional.isPresent()) {
-                    sectionOrderRepository.saveSectionOrderNativeQuery(sectionOrder.getUserId(), sectionOrder.getSectionId(), sectionOrder.getOrder());
+                    sectionOrderRepository.saveSectionOrderNativeQuery(sectionOrder.getUserId(), Integer.valueOf(sectionOrder.getSectionId()), sectionOrder.getIndex(), sectionOrder.getColumn());
 
                 } else {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_006);
@@ -215,7 +216,7 @@ public class QuickLinkController {
             List<Duo> sectionAndLinkPairList = new ArrayList<>();
 
             for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
-                Integer section = linkOrderDTO.getSectionId();
+                Integer section = Integer.valueOf(linkOrderDTO.getSectionId());
                 sectionAndLinkPairList.add(new Duo(section, linkOrderDTO.getLinkOrder()));
                 sectionSet.add(section);
             }
@@ -232,7 +233,7 @@ public class QuickLinkController {
             
 
             for (LinkOrderDTO linkOrderDTO : linkOrderDTOList) {
-                Optional<Link> linkOptional = linkRepository.findByLinkId(linkOrderDTO.getLinkId());
+                Optional<Link> linkOptional = linkRepository.findByLinkId(Integer.valueOf(linkOrderDTO.getLinkId()));
                 Link linkObject = linkOptional.orElse(null);
 
 
@@ -242,11 +243,11 @@ public class QuickLinkController {
                         throw new BadRequestException(ErrorDictionary.BR_001);
                         //throw new ResourceNotFoundException(ErrorDictionary.BR_001);
                     }
-                    if (!Objects.equals(linkOrderDTO.getSectionId(), linkObject.getSectionId())) {
+                    if (!Objects.equals(Integer.valueOf(linkOrderDTO.getSectionId()), linkObject.getSectionId())) {
 
                         throw new ResourceNotFoundException(ErrorDictionary.NF_008);
                     }
-                    linkOrderRepository.saveLinkOrderNativeQuery(linkOrderDTO.getUserId(), linkOrderDTO.getSectionId(), linkOrderDTO.getLinkOrder(), linkOrderDTO.getLinkId());
+                    linkOrderRepository.saveLinkOrderNativeQuery(linkOrderDTO.getUserId(), Integer.valueOf(linkOrderDTO.getSectionId()), linkOrderDTO.getLinkOrder(), Integer.valueOf(linkOrderDTO.getLinkId()));
 
                 } else {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_005);
@@ -264,18 +265,18 @@ public class QuickLinkController {
 
     @PostMapping("/{username}/unbookmark")
     public ResponseEntity<MessageResponse> deleteQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
-        List<Integer> linkIds = quickLinkDTO.getLinksId();
+        List<String> linkIds = quickLinkDTO.getLinksId();
 
         User user = userRepository.findByUserName(username);
         if (user == null) {
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
         }
 
-        for (Integer id : linkIds) {
-            Optional<Link> linkOptional = linkRepository.findByLinkId(id);
-            Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, id);
+        for (String id : linkIds) {
+            Optional<Link> linkOptional = linkRepository.findByLinkId(Integer.valueOf(id));
+            Optional<UserQuickLink> quickLinkOptional = userQuickLinkRepository.findByUserNameAndLinkId(username, Integer.valueOf(id));
             if (linkOptional.isPresent() && quickLinkOptional.isPresent()) {
-                userQuickLinkRepository.deleteByUserNameAndLinkId(username, id);
+                userQuickLinkRepository.deleteByUserNameAndLinkId(username, Integer.valueOf(id));
             } else {
                 if (!linkOptional.isPresent()) {
                     throw new ResourceNotFoundException(ErrorDictionary.NF_005);
@@ -329,6 +330,20 @@ public class QuickLinkController {
     }
 
     private boolean hasDuplicateLinkIdsAndOrder(List<Duo> theList) {
+        Set<Duo> seenSet = new HashSet<>();
+
+        for (Duo duo : theList) {
+            // If the number is already in the set, it's a duplicate
+            if (!seenSet.add(duo)) {
+                return true; // Duplicate found
+            }
+        }
+
+        // No duplicates found
+        return false;
+    }
+
+    private boolean hasDuplicateColumnAndIndex(List<Duo> theList) {
         Set<Duo> seenSet = new HashSet<>();
 
         for (Duo duo : theList) {

@@ -10,7 +10,7 @@ import lombok.*;
 
 
 @Getter
-//@Setter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -37,6 +37,9 @@ public class SectionOrder {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
-    @Column(name="section_order")
-    private Integer sectionOrder;
+    @Column(name="section_index")
+    private Integer index;
+
+    @Column(name="section_column")
+    private Integer column;
 }

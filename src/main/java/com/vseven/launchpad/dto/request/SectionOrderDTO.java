@@ -15,10 +15,12 @@ import lombok.experimental.SuperBuilder;
 @Data
 public class SectionOrderDTO {
 
-    private Integer sectionId;
+    private String sectionId;
 
     private Integer userId;
 
-    private Integer order;
+    private Integer index;
+
+    private Integer column;
 
 }
