@@ -18,6 +18,8 @@ public class LinkOrderResponse {
 
     private String linkName;
 
+    private String url;
+
     private Integer linkOrder;
 
 }
