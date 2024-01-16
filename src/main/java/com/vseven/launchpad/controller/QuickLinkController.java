@@ -19,6 +19,7 @@ import com.vseven.launchpad.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.aspectj.bridge.Message;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -50,8 +51,12 @@ public class QuickLinkController {
 
     private final SectionRepository sectionRepository;
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
     @GetMapping("/{username}/get")
     public ResponseEntity<FullResponse> getQuickLinks(@PathVariable String username) {
+        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Access-Control-Allow-Origin", "*");
+
         User user = userRepository.findByUserName(username);
         if (user == null) {
             throw new ResourceNotFoundException(ErrorDictionary.NF_002);
@@ -115,7 +120,7 @@ public class QuickLinkController {
                     .sectionOrderResponse(sectionOrderContent)
                     .build();
 
-            return ResponseEntity.ok(fullResponse);
+            return ResponseEntity.ok().headers(headers).body(fullResponse);
         }
 
 //        responseMap.put("userQuickLinks", quickLinksContent);
@@ -129,10 +134,11 @@ public class QuickLinkController {
                 .sectionOrderResponse(sectionOrderContent)
                 .build();
 
-        return ResponseEntity.ok(fullResponse);
+        return ResponseEntity.ok().headers(headers).body(fullResponse);
     }
 
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
     @PostMapping("/{username}/save")
     public ResponseEntity<MessageResponse> saveUserQuickLinks(@PathVariable String username, @RequestBody CombinedDTO combinedDTO) {
 
@@ -264,6 +270,7 @@ public class QuickLinkController {
         return ResponseEntity.ok(response);
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
     @PostMapping("/{username}/unbookmark")
     public ResponseEntity<MessageResponse> deleteQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
         List<String> linkIds = quickLinkDTO.getLinksId();
@@ -293,6 +300,7 @@ public class QuickLinkController {
         return ResponseEntity.ok(response);
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
     @PostMapping("/{username}/reset")
     public ResponseEntity<?> resetToHomePage(@PathVariable String username) {
 
