@@ -99,6 +99,7 @@ public class QuickLinkController {
                             .sectionId(String.valueOf(linkOrder.getSection().getSectionId()))
                             .linkId(String.valueOf(linkOrder.getLink().getLinkId()))
                             .linkName(linkOrder.getLink().getLinkName())
+                            .url(linkOrder.getLink().getUrl())
                             .linkOrder(linkOrder.getLinkOrder())
                             .build();
 
