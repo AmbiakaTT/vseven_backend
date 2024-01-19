@@ -267,7 +267,7 @@ CREATE TABLE SectionOrder (
   (269, 6, 44, 10, 1), (270, 6, 45, 10, 2);
 
 
-INSERT INTO SectionOrder (user_id, section_id, section_index, section_column)
+INSERT INTO SectionOrder (user_id, section_id, section_column, section_index)
 VALUES
 -- User 6 (Default user)
   (6, 1, 0, 0),
