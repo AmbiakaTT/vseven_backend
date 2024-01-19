@@ -64,7 +64,8 @@ INSERT INTO User (user_name, email, password_hash, enabled) VALUES
 ('user2', 'user2@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 1),
 ('user3', 'user3@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 1),
 ('user4', 'user4@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 1),
-('user5', 'user5@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 1);
+('user5', 'user5@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 1),
+('user6', 'user6@example.com', '$2a$10$xKhiHVXrnRhRftvLJue9O.l.3JnsgN82On5aI/g79Q74lOqB/LOme', 1);
 
 
 INSERT INTO authorities (user_id, authority, username) VALUES
@@ -72,7 +73,8 @@ INSERT INTO authorities (user_id, authority, username) VALUES
 (2, 'ADMIN', 'user2'),
 (3, 'ADMIN', 'user3'),
 (4, 'ADMIN', 'user4'),
-(5, 'ADMIN', 'user5');
+(5, 'ADMIN', 'user5'),
+(6, 'ADMIN', 'user6');
 
 
 -- Inserting data into the section table
@@ -250,11 +252,34 @@ CREATE TABLE SectionOrder (
   (208, 5, 28, 7, 1), (209, 5, 29, 7, 2), (210, 5, 30, 7, 3), (211, 5, 31, 7, 4), (212, 5, 32, 7, 5), (213, 5, 33, 7, 6), (214, 5, 34, 7, 7), (215, 5, 35, 7, 8), (216, 5, 36, 7, 9),
   (217, 5, 37, 8, 1), (218, 5, 38, 8, 2), (219, 5, 39, 8, 3), (220, 5, 40, 8, 4), (221, 5, 41, 8, 5),
   (222, 5, 42, 9, 1), (223, 5, 43, 9, 2),
-  (224, 5, 44, 10, 1), (225, 5, 45, 10, 2);
+  (224, 5, 44, 10, 1), (225, 5, 45, 10, 2),
+
+  -- User 6 (Default user)
+  (226, 6, 1, 1, 1), (227, 6, 2, 1, 2), (228, 6, 3, 1, 3), (229, 6, 4, 1, 4), (230, 6, 5, 1, 5),
+  (231, 6, 6, 2, 1), (232, 6, 7, 2, 2), (233, 6, 8, 2, 3), (234, 6, 9, 2, 4),
+  (235, 6, 10, 3, 1), (236, 6, 11, 3, 2), (237, 6, 12, 3, 3), (238, 6, 13, 3, 4), (239, 6, 14, 3, 5),
+  (240, 6, 15, 4, 1), (241, 6, 16, 4, 2), (242, 6, 17, 4, 3),
+  (243, 6, 18, 5, 1), (244, 6, 19, 5, 2),
+  (245, 6, 20, 6, 1), (246, 6, 21, 6, 2), (247, 6, 22, 6, 3), (248, 6, 23, 6, 4), (249, 6, 24, 6, 5), (250, 6, 25, 6, 6), (251, 6, 26, 6, 7), (252, 6, 27, 6, 8),
+  (253, 6, 28, 7, 1), (254, 6, 29, 7, 2), (255, 6, 30, 7, 3), (256, 6, 31, 7, 4), (257, 6, 32, 7, 5), (258, 6, 33, 7, 6), (259, 6, 34, 7, 7), (260, 6, 35, 7, 8), (261, 6, 36, 7, 9),
+  (262, 6, 37, 8, 1), (263, 6, 38, 8, 2), (264, 6, 39, 8, 3), (265, 6, 40, 8, 4), (266, 6, 41, 8, 5),
+  (267, 6, 42, 9, 1), (268, 6, 43, 9, 2),
+  (269, 6, 44, 10, 1), (270, 6, 45, 10, 2);
 
 
 INSERT INTO SectionOrder (user_id, section_id, section_index, section_column)
 VALUES
+-- User 6 (Default user)
+  (6, 1, 0, 0),
+  (6, 2, 0, 1),
+  (6, 3, 1, 0),
+  (6, 4, 1, 1),
+  (6, 5, 0, 2),
+  (6, 6, 2, 0),
+  (6, 7, 2, 1),
+  (6, 8, 3, 0),
+  (6, 9, 3, 1),
+  (6, 10, 3, 2),
 -- User 1
   (1, 1, 0, 0),
   (1, 2, 0, 1),
