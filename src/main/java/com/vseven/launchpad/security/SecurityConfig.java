@@ -52,10 +52,10 @@ public class SecurityConfig {
     }
     
 
-//    @Bean
-//    public JWTAuthenticationFilter jwtAuthenticationFilter() {
-//        return new JWTAuthenticationFilter();
-//    }
+    @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter() {
+        return new JWTAuthenticationFilter();
+    }
 
 
     @Bean
@@ -67,13 +67,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authorization -> authorization
-                        .requestMatchers("/login").permitAll()
-                        .anyRequest().authenticated()
+                .authorizeHttpRequests(auth ->
+                        auth.requestMatchers("/login").permitAll()
+                                .anyRequest().authenticated()
                 )
-                
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(withDefaults())
+               // .httpBasic(withDefaults())
                 //.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
