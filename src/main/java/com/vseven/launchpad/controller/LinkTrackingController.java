@@ -34,6 +34,7 @@ public class LinkTrackingController {
 
     private final LinkRepository linkRepository;
 
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", exposedHeaders = "*")
     @GetMapping("/top-links")
     public ResponseEntity<LinkTrackingResponse> getTopLinks() {
 
@@ -62,6 +63,7 @@ public class LinkTrackingController {
 
     }
 
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", exposedHeaders = "*")
     @PostMapping("/top-links")
     public ResponseEntity<MessageResponse> updateLinks(@RequestBody @NotNull List<LinkTrackingDTO> linkTrackingDTO) {
 
