@@ -51,7 +51,7 @@ public class QuickLinkController {
 
     private final SectionRepository sectionRepository;
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", exposedHeaders = "*")
     @GetMapping("/{username}/get")
     public ResponseEntity<FullResponse> getQuickLinks(@PathVariable String username) {
         HttpHeaders headers = new HttpHeaders();
@@ -138,7 +138,7 @@ public class QuickLinkController {
     }
 
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", exposedHeaders = "*")
     @PostMapping("/{username}/save")
     public ResponseEntity<MessageResponse> saveUserQuickLinks(@PathVariable String username, @RequestBody CombinedDTO combinedDTO) {
 
@@ -270,7 +270,7 @@ public class QuickLinkController {
         return ResponseEntity.ok(response);
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", exposedHeaders = "*")
     @PostMapping("/{username}/unbookmark")
     public ResponseEntity<MessageResponse> deleteQuickLinks(@PathVariable String username, @RequestBody QuickLinkDTO quickLinkDTO) {
         List<String> linkIds = quickLinkDTO.getLinksId();
@@ -300,7 +300,7 @@ public class QuickLinkController {
         return ResponseEntity.ok(response);
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*", exposedHeaders = "*")
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", exposedHeaders = "*")
     @PostMapping("/{username}/reset")
     public ResponseEntity<?> resetToHomePage(@PathVariable String username) {
 
