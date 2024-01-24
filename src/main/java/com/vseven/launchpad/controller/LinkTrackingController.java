@@ -84,4 +84,25 @@ public class LinkTrackingController {
 
     }
 
+    @PostMapping("/top-links/update")
+    public ResponseEntity<MessageResponse> increaseLinkCount(Integer linkId) {
+
+        Optional<Link> linkOptional = linkRepository.findByLinkId(linkId);
+        if (linkOptional.isPresent()) {
+            linkClickRepository.updateLinkClickNativeQuery(linkId);
+
+        }
+        else {
+            if (!linkOptional.isPresent()) {
+                throw new ResourceNotFoundException(ErrorDictionary.NF_005);
+            }
+        }
+
+        MessageResponse response = MessageResponse.builder()
+                .message("Link Tracking Successfully Updated")
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
 }

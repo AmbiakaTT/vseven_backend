@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
 import java.util.List;
@@ -23,4 +24,10 @@ public interface LinkClickRepository extends JpaRepository< LinkClick, Integer> 
     void saveLinkClickNativeQuery(Integer linkId, Integer numOfClicks);
 
     long count();
+
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE CATEGORY SET num_of_clicks = num_of_clicks + 1 WHERE linkId = :linkId", nativeQuery = true)
+    void updateLinkClickNativeQuery(@Param("linkId") Integer linkId);
 }
