@@ -83,6 +83,7 @@ public class LinkTrackingController {
 
     }
 
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", exposedHeaders = "*")
     @PostMapping("/top-links/update/{linkId}")
     public ResponseEntity<MessageResponse> increaseLinkCount(@PathVariable String linkId){
 
