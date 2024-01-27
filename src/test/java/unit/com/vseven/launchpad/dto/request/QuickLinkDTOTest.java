@@ -17,7 +17,7 @@ public class QuickLinkDTOTest {
     void testGettersAndSetters() {
         QuickLinkDTO quickLinkDTO = new QuickLinkDTO();
 
-        List<Integer> linksId = Arrays.asList(1, 2, 3);
+        List<String> linksId = Arrays.asList("1", "2", "3");
 
         quickLinkDTO.setLinksId(linksId);
 
@@ -26,9 +26,9 @@ public class QuickLinkDTOTest {
 
     @Test
     void testEqualsAndHashCode() {
-        List<Integer> linksId1 = Arrays.asList(1, 2, 3);
-        List<Integer> linksId2 = Arrays.asList(1, 2, 3);
-        List<Integer> differentLinksId = Arrays.asList(4, 5, 6);
+        List<String> linksId1 = Arrays.asList("1", "2", "3");
+        List<String> linksId2 = Arrays.asList("1", "2", "3");
+        List<String> differentLinksId = Arrays.asList("4", "5", "6");
 
         QuickLinkDTO quickLinkDTO1 = QuickLinkDTO.builder().linksId(linksId1).build();
         QuickLinkDTO quickLinkDTO2 = QuickLinkDTO.builder().linksId(linksId2).build();
@@ -45,7 +45,7 @@ public class QuickLinkDTOTest {
 
     @Test
     void testToString() {
-        List<Integer> linksId = Arrays.asList(1, 2, 3);
+        List<String> linksId = Arrays.asList("1", "2", "3");
 
         QuickLinkDTO quickLinkDTO = QuickLinkDTO.builder().linksId(linksId).build();
 

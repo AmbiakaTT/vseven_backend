@@ -20,12 +20,12 @@ public class CombinedDTOTest {
     void testGettersAndSetters() {
         CombinedDTO combinedDTO = new CombinedDTO();
 
-        QuickLinkDTO quickLinkDTO = QuickLinkDTO.builder().linksId(Arrays.asList(1, 2, 3)).build();
+        QuickLinkDTO quickLinkDTO = QuickLinkDTO.builder().linksId(Arrays.asList("1", "2", "3")).build();
         List<SectionOrderDTO> sectionOrderDTOList = Collections.singletonList(
-                SectionOrderDTO.builder().sectionId(1).userId(2).order(3).build()
+                SectionOrderDTO.builder().sectionId("1").userId(2).column(1).index(1).build()
         );
         List<LinkOrderDTO> linkOrderDTOList = Collections.singletonList(
-                LinkOrderDTO.builder().sectionId(4).userId(5).linkId(6).linkOrder(7).build()
+                LinkOrderDTO.builder().sectionId("4").userId(5).linkId("6").linkOrder(7).build()
         );
 
         combinedDTO.setQuickLinkDTO(quickLinkDTO);
@@ -39,12 +39,12 @@ public class CombinedDTOTest {
 
     @Test
     void testEqualsAndHashCode() {
-        QuickLinkDTO quickLinkDTO = QuickLinkDTO.builder().linksId(Arrays.asList(1, 2, 3)).build();
+        QuickLinkDTO quickLinkDTO = QuickLinkDTO.builder().linksId(Arrays.asList("1", "2", "3")).build();
         List<SectionOrderDTO> sectionOrderDTOList = Collections.singletonList(
-                SectionOrderDTO.builder().sectionId(1).userId(2).order(3).build()
+                SectionOrderDTO.builder().sectionId("1").userId(2).column(1).index(1).build()
         );
         List<LinkOrderDTO> linkOrderDTOList = Collections.singletonList(
-                LinkOrderDTO.builder().sectionId(4).userId(5).linkId(6).linkOrder(7).build()
+                LinkOrderDTO.builder().sectionId("4").userId(5).linkId("6").linkOrder(7).build()
         );
 
         CombinedDTO combinedDTO1 = CombinedDTO.builder()
@@ -72,12 +72,12 @@ public class CombinedDTOTest {
 
     @Test
     void testToString() {
-        QuickLinkDTO quickLinkDTO = QuickLinkDTO.builder().linksId(Arrays.asList(1, 2, 3)).build();
+        QuickLinkDTO quickLinkDTO = QuickLinkDTO.builder().linksId(Arrays.asList("1", "2", "3")).build();
         List<SectionOrderDTO> sectionOrderDTOList = Collections.singletonList(
-                SectionOrderDTO.builder().sectionId(1).userId(2).order(3).build()
+                SectionOrderDTO.builder().sectionId("1").userId(2).column(1).index(1).build()
         );
         List<LinkOrderDTO> linkOrderDTOList = Collections.singletonList(
-                LinkOrderDTO.builder().sectionId(4).userId(5).linkId(6).linkOrder(7).build()
+                LinkOrderDTO.builder().sectionId("4").userId(5).linkId("6").linkOrder(7).build()
         );
 
         CombinedDTO combinedDTO = CombinedDTO.builder()

@@ -92,7 +92,7 @@ INSERT INTO Section (section_id, section_name) VALUES
 
 
 INSERT INTO Link (link_id, section_id, link_name, url) VALUES
-(1, '1', 'SIS Tutorials', ''),
+(1, '1', 'SIS Tutorials', 'https://vinuni.edu.vn/'),
 (2, '1', 'Canvas Tutorial', 'https://statics.teams.cdn.office.net/evergreen-assets/safelinks/1/atp-safelinks.html'),
 (3, '1', 'Important Contacts', 'https://vinuniversity.sharepoint.com/sites/HomeSite/SitePages/Contact-Information.aspx'),
 (4, '1', 'VinUni Maps', 'https://vinuni.edu.vn/visit/'),
@@ -153,7 +153,7 @@ INSERT INTO Link (link_id, section_id, link_name, url) VALUES
 
 -- Section 10
 (44, '10', 'General Enquiries', 'https://vinuni.edu.vn/contact/'),
-(45, '10', 'Alumni Network', '');
+(45, '10', 'Alumni Network', 'https://vinuni.edu.vn/');
 
 -- Insert data into the LinkClicks table
 INSERT INTO LinkClicks (link_click_id, link_id, num_of_clicks) VALUES

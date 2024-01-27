@@ -10,13 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 public class MockDataUtils {
-    public static Integer MOCK_LINK_ID = 1;
-    public static Integer MOCK_SECTION_ID = 1;
+    public static String MOCK_LINK_ID = "1";
+    public static String MOCK_SECTION_ID = "1";
     public static String MOCK_URL = "url";
     public static String MOCK_LINK_NAME = "link name";
     public static String MOCK_SECTION_NAME = "section name";
     public static Integer MOCK_LINK_ORDER = 1;
-    public static Integer MOCK_SECTION_ORDER = 1;
+    public static Integer MOCK_COLUMN = 1;
+    public static Integer MOCK_INDEX = 1;
 
     // User Entity
     public static String MOCK_USER_NAME = "test user";
@@ -62,10 +63,10 @@ public class MockDataUtils {
 
     // Link Entity
     public static Link MOCK_LINK = Link.builder()
-            .linkId(MOCK_LINK_ID)
+            .linkId(Integer.valueOf(MOCK_LINK_ID))
             .url(MOCK_URL)
             .linkName(MOCK_LINK_NAME)
-            .sectionId(MOCK_SECTION_ID)
+            .sectionId(Integer.valueOf(MOCK_SECTION_ID))
             .build();
     public static Optional<Link> MOCK_LINK_OPTIONAL = Optional.of(MOCK_LINK);
 
@@ -81,7 +82,7 @@ public class MockDataUtils {
 
     // Section Entity
     public static Section MOCK_SECTION = Section.builder()
-            .sectionId(MOCK_SECTION_ID)
+            .sectionId(Integer.valueOf(MOCK_SECTION_ID))
             .sectionName(MOCK_SECTION_NAME)
             .build();
     public static Optional<Section> MOCK_SECTION_OPTIONAL = Optional.of(MOCK_SECTION);
@@ -89,7 +90,8 @@ public class MockDataUtils {
     //SectionOrder entity
     public static SectionOrder MOCK_SECTION_ORDER_ENTITY = SectionOrder.builder()
             .section(MOCK_SECTION)
-            .sectionOrder(MOCK_SECTION_ORDER)
+            .column(MOCK_COLUMN)
+            .index(MOCK_INDEX)
             .user(MOCK_USER_1)
             .build();
     public static List<SectionOrder> MOCK_SECTION_ORDER_LIST = Arrays.asList(MOCK_SECTION_ORDER_ENTITY);
@@ -125,7 +127,8 @@ public class MockDataUtils {
     public static SectionOrderDTO MOCK_SECTION_ORDER_DTO = SectionOrderDTO.builder()
             .sectionId(MOCK_SECTION_ID)
             .userId(MOCK_USER_ID)
-            .order(MOCK_SECTION_ORDER)
+            .column(MOCK_COLUMN)
+            .index(MOCK_INDEX)
             .build();
 
     public static CombinedDTO MOCK_COMBINED_DTO = CombinedDTO.builder()
@@ -135,7 +138,7 @@ public class MockDataUtils {
             .build();
 
     public static LinkTrackingDTO MOCK_LINK_TRACKING_DTO = LinkTrackingDTO.builder()
-            .linkId(MOCK_LINK_ID)
+            .linkId(Integer.valueOf(MOCK_LINK_ID))
             .numOfClicks(MOCK_NUM_OF_CLICKS)
             .build();
 
@@ -150,6 +153,7 @@ public class MockDataUtils {
     public static LinkOrderResponse MOCK_LINK_ORDER_RESPONSE = LinkOrderResponse.builder()
             .sectionId(MOCK_SECTION_ID)
             .linkId(MOCK_LINK_ID)
+            .url(MOCK_URL)
             .linkName(MOCK_LINK_NAME)
             .linkOrder(MOCK_LINK_ORDER)
             .build();
@@ -157,7 +161,8 @@ public class MockDataUtils {
     public static SectionOrderResponse MOCK_SECTION_ORDER_RESPONSE = SectionOrderResponse.builder()
             .sectionId(MOCK_SECTION_ID)
             .sectionName(MOCK_SECTION_NAME)
-            .sectionOrder(MOCK_SECTION_ORDER)
+            .column(MOCK_COLUMN)
+            .index(MOCK_INDEX)
             .build();
 
     public static List<LinkResponse> MOCK_QUICK_LINK = Arrays.asList(MOCK_LINK_RESPONSE);
