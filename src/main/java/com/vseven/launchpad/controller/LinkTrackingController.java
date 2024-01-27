@@ -16,10 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -86,8 +83,8 @@ public class LinkTrackingController {
 
     }
 
-    @PostMapping("/top-links/update")
-    public ResponseEntity<MessageResponse> increaseLinkCount(Integer linkId) {
+    @PostMapping("/top-links/update/{linkId}")
+    public ResponseEntity<MessageResponse> increaseLinkCount(@RequestParam Integer linkId){
 
         Optional<Link> linkOptional = linkRepository.findByLinkId(linkId);
         if (linkOptional.isPresent()) {
