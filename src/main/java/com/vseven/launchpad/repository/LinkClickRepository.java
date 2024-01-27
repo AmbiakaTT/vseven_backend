@@ -28,6 +28,6 @@ public interface LinkClickRepository extends JpaRepository< LinkClick, Integer> 
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE LinkClicks SET num_of_clicks = num_of_clicks + 1 WHERE link_id = :linkId", nativeQuery = true)
+    @Query(value = "INSERT INTO LinkClicks (link_id, num_of_clicks) VALUES (:linkId, 1) ON DUPLICATE KEY UPDATE num_of_clicks = num_of_clicks + 1", nativeQuery = true)
     void updateLinkClickNativeQuery(@Param("linkId") Integer linkId);
 }
