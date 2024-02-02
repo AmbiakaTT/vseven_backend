@@ -1,7 +1,12 @@
 # VinUni Launchpad Project
 
 ## Environment Setup
-
+Required dependencies:
+```txt
+Spring Boot 3+
+Maven
+JDK 17
+```
 ### Step 0
 ```bash
 git clone https://github.com/AmbiakaTT/vseven_backend
@@ -39,3 +44,29 @@ mvn clean install
 This command will download dependencies, compile the code, and package your application.
 
 *Note: Alternatively, you can use Jetbrains IntelliJ which can automatically load Maven dependencies for you.*
+
+## Developer Workflow
+
+1. Read user story
+2. Discuss details with project manager
+3. Implementation
+4. Testing
+5. Fix any bugs
+
+## Structure Overview
+
+The codebase is organized into several key packages:
+
+- `src/main/java/com/vseven/launchpad/controller`: Contains classes responsible for handling incoming HTTP requests, processing input data, and producing HTTP responses.
+- `src/main/java/com/vseven/launchpad/repository`: Houses classes responsible for data access, typically through database operations or external API calls.
+- `src/main/java/com/vseven/launchpad/entity`: Contains entity classes representing data models used within the application. These classes often map to database tables.
+- `src/main/java/com/vseven/launchpad/dto`: Contains Data Transfer Object (DTO) classes, which are used for transferring data between layers of the application or between the application and external systems.
+- `src/main/java/com/vseven/launchpad/model`: Contains additional model classes that represent data structures used within the application but are not directly mapped to the database.
+- `src/main/java/com/vseven/launchpad/security`: Holds classes responsible for implementing security measures such as authentication, authorization, and access control.
+- `src/main/java/com/vseven/launchpad/exception`: Contains classes defining custom exceptions used within the application.
+
+- Depreciated:
+-`src/main/java/com/vseven/launchpad/service`: No longer in use
+
+
+
