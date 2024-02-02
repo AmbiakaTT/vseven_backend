@@ -34,7 +34,7 @@ USE VSEVEN_INTEGRATE
 Copy code from main/src/main/resources/static/sqlscripts/setup.sql and paste it into MySQL workbench
 
 ### Password
-Change password from main/src/main/resources/application.properties to your password
+Change local MySQL workbench password from main/src/main/resources/application.properties to your password
 
 ### Step 4: Maven Build
 To build your project using Maven, execute the following command:
@@ -45,6 +45,8 @@ This command will download dependencies, compile the code, and package your appl
 
 *Note: Alternatively, you can use Jetbrains IntelliJ which can automatically load Maven dependencies for you.*
 
+### Step 5: Run application
+Run LaunchpadApplication
 ## Developer Workflow
 
 1. Read user story
@@ -64,6 +66,7 @@ The codebase is organized into several key packages:
 - `src/main/java/com/vseven/launchpad/model`: Contains additional model classes that represent data structures used within the application but are not directly mapped to the database.
 - `src/main/java/com/vseven/launchpad/security`: Holds classes responsible for implementing security measures such as authentication, authorization, and access control.
 - `src/main/java/com/vseven/launchpad/exception`: Contains classes defining custom exceptions used within the application.
+- `test/unit/com`: Unit testing with mockito framework 
 
 - Depreciated:
 -`src/main/java/com/vseven/launchpad/service`: No longer in use
